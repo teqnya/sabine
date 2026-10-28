@@ -4,6 +4,16 @@ Newest entries at the top. Each entry: date, decision/finding, rationale.
 
 ---
 
+## 2026-10-28 — First app running on the device ✅
+
+- **Xcode 26.3 deploys to iOS 27.0.1.** The signed debug and profile builds of the placeholder app install and launch on the iPhone 13 (wireless, via `devicectl`). The Xcode 27 / Apple Silicon risk does not block the spike.
+- Signing with Teqnya UG (`3267CMJYRV`) works; Xcode created the provisioning profile for `com.teqnya.veltrio` automatically.
+- **Disk lessons:** the first connection to an iOS 27 device extracts debug symbols into `~/Library/Developer/Xcode/iOS DeviceSupport` (>5 GB), and that filled the disk. The owner freed space: **~12 GB free** after the builds. The iOS 18.1 simulator `.dmg` (8.2 GB, SIP-protected) is still present; it can be removed via Recovery mode.
+- **Spike measurements use profile builds** (`flutter build ios --profile`). Debug builds need the Flutter tool attached and are not representative of performance.
+- How to run: `flutter build ios --profile && xcrun devicectl device install app --device 00008110-0018090E0AF2401E build/ios/iphoneos/Runner.app`
+
+---
+
 ## 2026-10-28 — First device build attempt
 
 - The iOS 26.3.1 platform is now installed, and the phone ("iPhone SE" = iPhone 13) shows as an eligible destination.
