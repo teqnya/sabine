@@ -1,0 +1,53 @@
+# Model files (never commit)
+*.gguf
+models/
+
+# Local / real test data (only synthetic data under spike/testdata is committed)
+spike/testdata/local/
+*.eml
+*.mbox
+
+# Secrets
+.env
+*.pem
+*.p12
+*.mobileprovision
+
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+.pub-cache/
+.pub/
+coverage/
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+ios/Flutter/flutter_export_environment.sh
+**/xcuserdata/
+**/DerivedData/
+
+# Android
+android/.gradle/
+android/local.properties
+android/app/debug
+android/app/profile
+android/app/release
+*.jks
+*.keystore
+
+# Native build of llama.cpp
+third_party/llama.cpp/build*/
+
+# IDE / OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
