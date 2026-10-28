@@ -4,6 +4,27 @@ Newest entries at the top. Each entry: date, decision/finding, rationale.
 
 ---
 
+## 2026-10-28 — 50-message run: prompt v1 vs v2 (Qwen2.5-1.5B, iPhone 13)
+
+Labels are still the **proposed** labels (owner review pending).
+
+| | triage.v1 | triage.v2 |
+|---|---|---|
+| Accuracy | ~45–50% (from a partial screenshot of a manual run; not logged) | **78% (39/50)**: de 65%, en 83%, ar 92% |
+| Main error | over-alarming: needs_decision, fyi and even spam → urgent; ads → fyi | **urgent → noise** (m006 phishing, m017 supplier stop, m025 data breach, m037 outage); m029 urgent → needs_decision |
+| Urgent recall | — | **5/10** |
+| Time | — | 83 s for 50 (1.66 s/msg); prompt ~690 tokens, 563 of them cached |
+| Peak memory | 276 MB | 274 MB |
+| Invalid JSON | 0 | 0 |
+
+Findings:
+- v2 (ordered rules, noise checked first, short examples) fixed the over-alarming but overcorrected: 4 genuinely urgent business mails were classified as noise. **Missing urgent mail is the worst failure for this product.**
+- Remaining misses: noise → fyi (shipping notice, prize spam, networking ad), needs_decision → fyi/noise (m010, m027), fyi → noise (m032 CC thread).
+- A 1.5B model seems near its limit at following these rules. Next options: (a) deterministic noise pre-filter (sender patterns, `List-Unsubscribe` header on real mail, marketing phrases), as CLAUDE.md §6 prefers rules where accurate; (b) larger models (Gemma, Llama 3.2 3B: owner downloading); (c) prompt v3 with urgent checked before noise.
+- Speed: 83 s for 50 messages on the A15 (target < 30 s on target hardware; the A15 is the minimum bar).
+
+---
+
 ## 2026-10-28 — Prompt-prefix KV cache (owner chose this speed-up)
 
 - The wrapper keeps the previous prompt's tokens and reuses the KV cache for the longest common prefix (`llama_memory_seq_rm`); only the tail is decoded. If a cache cannot remove part of a sequence (e.g. sliding-window attention, as in Gemma 3), it falls back to a clean context. A host test checks that output equals a fresh context.
