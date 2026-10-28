@@ -48,7 +48,8 @@ TestMessage _msg(String id, {String body = 'body'}) => TestMessage(
 
 void main() {
   final prompt = TriagePrompt(
-    template: File('lib/core/ai/prompts/triage.v1.txt').readAsStringSync(),
+    version: 'triage.v2',
+    template: File('lib/core/ai/prompts/triage.v2.txt').readAsStringSync(),
     grammar: File('lib/core/ai/schemas/triage.v1.gbnf').readAsStringSync(),
   );
 

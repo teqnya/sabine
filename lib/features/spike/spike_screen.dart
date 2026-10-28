@@ -53,6 +53,9 @@ class _SpikeScreenState extends State<SpikeScreen> {
 
   static const _platform = MethodChannel('veltrio/platform');
 
+  /// Triage prompt in use; v1 is kept for comparison (see DECISIONS.md).
+  static const _promptVersion = 'triage.v2';
+
   /// Set from the native `veltrio/paths` channel in [_init].
   static String _documentsDir = '';
 
@@ -67,13 +70,17 @@ class _SpikeScreenState extends State<SpikeScreen> {
       final results = await Future.wait([
         rootBundle.loadString('spike/testdata/messages.json'),
         rootBundle.loadString('spike/testdata/labels.json'),
-        rootBundle.loadString('lib/core/ai/prompts/triage.v1.txt'),
+        rootBundle.loadString('lib/core/ai/prompts/$_promptVersion.txt'),
         rootBundle.loadString('lib/core/ai/schemas/triage.v1.gbnf'),
       ]);
       final ds = TestDataset.parse(results[0], results[1]);
       setState(() {
         _dataset = ds;
-        _prompt = TriagePrompt(template: results[2], grammar: results[3]);
+        _prompt = TriagePrompt(
+          version: _promptVersion,
+          template: results[2],
+          grammar: results[3],
+        );
         _selectedMessageId = ds.messages.first.id;
       });
     } catch (e) {
@@ -113,14 +120,10 @@ class _SpikeScreenState extends State<SpikeScreen> {
       'footprint ${_mb(LlamaModel.memoryFootprint())}; '
       'devices ${LlamaModel.backendInfo()}',
     );
-    // Each message is logged as it completes, so an interrupted run
-    // (e.g. app suspended) still leaves partial results.
-    await _runAll(onRun: (r) => _log(_runLine(r)));
-    final report = _report;
-    if (report == null) {
-      _log('ERROR batch failed: $_error');
-      return;
-    }
+    await _runAll();
+  }
+
+  void _logSummary(BatchReport report) {
     final score = report.score;
     final remaining = LlamaModel.memoryLimitRemaining();
     _log(
@@ -217,27 +220,35 @@ class _SpikeScreenState extends State<SpikeScreen> {
   });
 
   /// Keeps the screen on while the batch runs: iOS suspends the app on lock,
-  /// and GPU work is not allowed in the background.
-  Future<void> _runAll({void Function(TriageRun run)? onRun}) =>
-      _guard('Running batch…', () async {
-        _cancel = false;
-        await _platform.invokeMethod<void>('setIdleTimerDisabled', true);
-        try {
-          final report = await runBatch(
-            _llm,
-            _prompt!,
-            _dataset!,
-            onProgress: (done, total) =>
-                setState(() => _progress = (done, total)),
-            onRun: onRun,
-            isCancelled: () => _cancel,
-          );
-          setState(() => _report = report);
-        } finally {
-          setState(() => _progress = null);
-          await _platform.invokeMethod<void>('setIdleTimerDisabled', false);
-        }
-      });
+  /// and GPU work is not allowed in the background. Every run (manual or
+  /// autorun) is logged message by message, so an interrupted run still
+  /// leaves partial results.
+  Future<void> _runAll() => _guard('Running batch…', () async {
+    _cancel = false;
+    _log(
+      'START model=${_loaded?.name} prompt=${_prompt!.version} '
+      'messages=${_dataset!.messages.length}',
+    );
+    await _platform.invokeMethod<void>('setIdleTimerDisabled', true);
+    try {
+      final report = await runBatch(
+        _llm,
+        _prompt!,
+        _dataset!,
+        onProgress: (done, total) => setState(() => _progress = (done, total)),
+        onRun: (r) => _log(_runLine(r)),
+        isCancelled: () => _cancel,
+      );
+      setState(() => _report = report);
+      _logSummary(report);
+    } catch (e) {
+      _log('ERROR batch failed: $e');
+      rethrow;
+    } finally {
+      setState(() => _progress = null);
+      await _platform.invokeMethod<void>('setIdleTimerDisabled', false);
+    }
+  });
 
   @override
   Widget build(BuildContext context) {

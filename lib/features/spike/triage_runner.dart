@@ -8,9 +8,16 @@ import 'test_dataset.dart';
 const maxBodyChars = 3000;
 
 class TriagePrompt {
-  const TriagePrompt({required this.template, required this.grammar});
+  const TriagePrompt({
+    required this.version,
+    required this.template,
+    required this.grammar,
+  });
 
-  /// `prompts/triage.v1.txt`
+  /// Prompt file version, e.g. `triage.v2`; logged with every batch.
+  final String version;
+
+  /// `prompts/<version>.txt`
   final String template;
 
   /// `schemas/triage.v1.gbnf`

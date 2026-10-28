@@ -50,17 +50,22 @@ void main() {
   });
 
   group('renderPrompt', () {
-    test('fills all placeholders of triage.v1', () {
-      final template = File('lib/core/ai/prompts/triage.v1.txt')
-          .readAsStringSync();
-      final out = renderPrompt(template, {
-        'from': 'a',
-        'subject': 'b',
-        'date': 'c',
-        'body': 'd',
+    for (final version in ['triage.v1', 'triage.v2']) {
+      test('fills all placeholders of $version', () {
+        final template = File('lib/core/ai/prompts/$version.txt')
+            .readAsStringSync();
+        final out = renderPrompt(template, {
+          'from': 'a',
+          'subject': 'b',
+          'date': 'c',
+          'body': 'd',
+        });
+        expect(out, isNot(contains('{{')));
+        // Message-specific fields come last so the instruction prefix is
+        // identical across messages (KV prefix cache).
+        expect(template.indexOf('{{from}}'), greaterThan(template.length ~/ 2));
       });
-      expect(out, isNot(contains('{{')));
-    });
+    }
 
     test('throws on missing value', () {
       expect(() => renderPrompt('{{x}}', {}), throwsArgumentError);
