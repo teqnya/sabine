@@ -70,7 +70,66 @@ class _SpikeScreenState extends State<SpikeScreen> {
       setState(() => _error = 'Failed to load test data: $e');
     }
     _scanModels();
+    await _autorun();
   }
+
+  /// Spike-only: when launched with `VELTRIO_AUTORUN=model.gguf`, loads
+  /// that model, runs the batch and prints results to the console so runs can
+  /// be repeated and captured from the Mac. Prints ids, labels and metrics for
+  /// the synthetic test set only.
+  Future<void> _autorun() async {
+    final name = Platform.environment['VELTRIO_AUTORUN'];
+    if (name == null || _dataset == null) return;
+    final match = _models.where((f) => f.uri.pathSegments.last == name);
+    if (match.isEmpty) {
+      _log('ERROR model $name not found in Documents');
+      return;
+    }
+    setState(() => _selectedModel = match.first);
+    await _load();
+    final loaded = _loaded;
+    if (loaded == null) {
+      _log('ERROR load failed: $_error');
+      return;
+    }
+    _log(
+      'LOADED ${loaded.name} in ${_secs(loaded.loadTime)}; '
+      'footprint ${_mb(LlamaModel.memoryFootprint())}',
+    );
+    await _runAll();
+    final report = _report;
+    if (report == null) {
+      _log('ERROR batch failed: $_error');
+      return;
+    }
+    for (final r in report.runs) {
+      final s = r.stats;
+      _log(
+        'RUN ${r.message.id} ${r.message.language} '
+        'expected=${r.label.category.wire} got=${r.result?.category.wire ?? 'error'} '
+        '${s == null ? '' : 'prompt=${s.promptTokens}tok/${s.promptEvalTime.inMilliseconds}ms '
+                  'gen=${s.generatedTokens}tok/${s.generationTime.inMilliseconds}ms '
+                  '${s.generationTokensPerSecond.toStringAsFixed(1)}tok/s '
+                  'peak=${s.peakMemoryBytes == null ? '?' : _mb(s.peakMemoryBytes!)}'}'
+        '${r.truncated ? ' truncated' : ''}'
+        '${r.error == null ? '' : ' error="${r.error}" raw=${r.raw}'}',
+      );
+    }
+    final score = report.score;
+    final remaining = LlamaModel.memoryLimitRemaining();
+    _log(
+      'SUMMARY accuracy=${_pct(score.accuracy)} (${score.correct}/${score.total}) '
+      'byLang=${score.accuracyByLanguage.map((k, v) => MapEntry(k, _pct(v)))} '
+      'errors=${report.errors} wall=${_secs(report.wallTime)} '
+      'avg=${_secs(report.averagePerMessage)}/msg '
+      'tok/s=${report.averageTokensPerSecond.toStringAsFixed(1)} '
+      'peak=${report.peakMemoryBytes == null ? '?' : _mb(report.peakMemoryBytes!)} '
+      'headroom=${remaining == null ? '?' : _mb(remaining)}',
+    );
+  }
+
+  // ignore: avoid_print
+  static void _log(String line) => print('VELTRIO $line');
 
   void _scanModels() {
     final dir = Directory(_documentsDir);
