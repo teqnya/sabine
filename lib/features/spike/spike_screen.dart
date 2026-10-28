@@ -49,10 +49,18 @@ class _SpikeScreenState extends State<SpikeScreen> {
     super.dispose();
   }
 
-  static String get _documentsDir =>
-      '${Platform.environment['HOME'] ?? ''}/Documents';
+  static const _paths = MethodChannel('veltrio/paths');
+
+  /// Set from the native `veltrio/paths` channel in [_init].
+  static String _documentsDir = '';
 
   Future<void> _init() async {
+    try {
+      _documentsDir =
+          await _paths.invokeMethod<String>('documentsDirectory') ?? '';
+    } on PlatformException catch (e) {
+      setState(() => _error = 'Cannot resolve Documents folder: ${e.message}');
+    }
     try {
       final results = await Future.wait([
         rootBundle.loadString('spike/testdata/messages.json'),
@@ -128,8 +136,20 @@ class _SpikeScreenState extends State<SpikeScreen> {
     );
   }
 
-  // ignore: avoid_print
-  static void _log(String line) => print('VELTRIO $line');
+  /// Prints and appends to Documents/spike_autorun.log, which the Mac fetches
+  /// with `devicectl device copy from` (iOS routes print() to the system log,
+  /// not to the attached console).
+  static void _log(String line) {
+    final stamped = '${DateTime.now().toIso8601String()} VELTRIO $line';
+    // ignore: avoid_print
+    print(stamped);
+    try {
+      File('$_documentsDir/spike_autorun.log')
+          .writeAsStringSync('$stamped\n', mode: FileMode.append, flush: true);
+    } on FileSystemException {
+      // Console output above is still available; never crash on logging.
+    }
+  }
 
   void _scanModels() {
     final dir = Directory(_documentsDir);
@@ -267,8 +287,8 @@ class _SpikeScreenState extends State<SpikeScreen> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'No .gguf models found in the app\'s Documents folder. '
+          Text(
+            'No .gguf models found in $_documentsDir. '
             'Copy one with:\n'
             'xcrun devicectl device copy to --device <id> '
             '--domain-type appDataContainer --domain-identifier com.teqnya.veltrio '
