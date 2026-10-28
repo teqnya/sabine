@@ -4,6 +4,16 @@ Newest entries at the top. Each entry: date, decision/finding, rationale.
 
 ---
 
+## 2026-10-28 — First device build attempt
+
+- The iOS 26.3.1 platform is now installed, and the phone ("iPhone SE" = iPhone 13) shows as an eligible destination.
+- After the restart, the orphaned iOS 18.1 runtime was re-registered from its SIP-protected `.dmg` (17.7 GB of runtimes in total). It was deleted again with `simctl`; the 8.2 GB `.dmg` remains. **Free disk: ~2 GB.**
+- **Signing fails:** Xcode's session for teqnya.developer@gmail.com expired ("login details were rejected"), so no provisioning profile can be created for `com.teqnya.veltrio`. The owner must sign in again in Xcode → Settings → Accounts.
+- **Device fails:** *"The developer disk image could not be mounted on this device."* Likely causes: phone locked, Developer Mode off, or a wireless-only connection. Retry over USB with the phone unlocked.
+- **Structural risk:** **Xcode 27 is Apple Silicon only and needs macOS 26.6 or later** (per Apple forum and third-party reports; not checked against Apple's own release notes). This Intel Mac on macOS 15.8 can never run it. If Xcode 26.3 can't deploy to iOS 27, then on-device testing needs an Apple Silicon Mac. Flutter is also deprecating Intel hosts.
+
+---
+
 ## 2026-10-28 — Product name and bundle ID
 
 - **Product name: Veltrio** (shown on the home screen and in the app title). Repo, folder and Dart package stay `sabine` (internal only).
