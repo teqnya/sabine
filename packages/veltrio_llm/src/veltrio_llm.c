@@ -16,6 +16,9 @@ typedef struct vl_handle {
     struct llama_context * ctx;
     const struct llama_vocab * vocab;
     const char * chat_template; // owned by the model; may be NULL
+    // Prompt tokens currently in the KV cache (prefix reuse across calls).
+    llama_token * cached;
+    int32_t n_cached;
 } vl_handle;
 
 static int vl_logging = 0;
@@ -228,7 +231,23 @@ int32_t vl_generate(void * handle, const char * system, const char * user,
         return -1;
     }
 
-    llama_memory_clear(llama_get_memory(h->ctx), 1);
+    // Reuse the KV cache for the prefix shared with the previous prompt. At
+    // least one token is always decoded so fresh logits exist.
+    llama_memory_t mem = llama_get_memory(h->ctx);
+    int32_t n_keep = 0;
+    while (n_keep < h->n_cached && n_keep < n_prompt && h->cached[n_keep] == tokens[n_keep]) {
+        n_keep++;
+    }
+    if (n_keep == n_prompt) n_keep--;
+    // Partial removal is unsupported by some caches (e.g. sliding-window
+    // attention); fall back to a clean context.
+    if (n_keep == 0 || !llama_memory_seq_rm(mem, 0, n_keep, -1)) {
+        llama_memory_clear(mem, 1);
+        n_keep = 0;
+    }
+    free(h->cached);
+    h->cached = NULL;
+    h->n_cached = 0;
 
     int32_t written = 0;
     int32_t generated = 0;
@@ -236,7 +255,7 @@ int32_t vl_generate(void * handle, const char * system, const char * user,
     int64_t sample_us = 0;
 
     const int64_t t0 = ggml_time_us();
-    if (llama_decode(h->ctx, llama_batch_get_one(tokens, n_prompt)) != 0) {
+    if (llama_decode(h->ctx, llama_batch_get_one(tokens + n_keep, n_prompt - n_keep)) != 0) {
         vl_set_err(err, err_len, "prompt decode failed");
         rc = -1;
     }
@@ -304,11 +323,19 @@ int32_t vl_generate(void * handle, const char * system, const char * user,
     free(cand);
     if (grmr) llama_sampler_free(grmr);
     llama_sampler_free(chain);
-    free(tokens);
+    if (rc == 0) {
+        // Keep the prompt tokens for the next call; generated tokens beyond
+        // them are dropped by the seq_rm above.
+        h->cached = tokens;
+        h->n_cached = n_prompt;
+    } else {
+        free(tokens);
+    }
 
     if (stats != NULL) {
         stats->prompt_tokens = n_prompt;
         stats->generated_tokens = generated;
+        stats->cached_tokens = n_keep;
         stats->prompt_ms = (double) (t1 - t0) / 1000.0;
         stats->generation_ms = (double) (t2 - t1) / 1000.0;
         stats->sample_ms = (double) sample_us / 1000.0;
@@ -322,6 +349,7 @@ void vl_free(void * handle) {
     if (h == NULL) return;
     llama_free(h->ctx);
     llama_model_free(h->model);
+    free(h->cached);
     free(h);
 }
 

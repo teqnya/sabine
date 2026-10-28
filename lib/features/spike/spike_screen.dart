@@ -124,7 +124,7 @@ class _SpikeScreenState extends State<SpikeScreen> {
       _log(
         'RUN ${r.message.id} ${r.message.language} '
         'expected=${r.label.category.wire} got=${r.result?.category.wire ?? 'error'} '
-        '${s == null ? '' : 'prompt=${s.promptTokens}tok/${s.promptEvalTime.inMilliseconds}ms '
+        '${s == null ? '' : 'prompt=${s.promptTokens}tok(${s.cachedPromptTokens} cached)/${s.promptEvalTime.inMilliseconds}ms '
                   'gen=${s.generatedTokens}tok/${s.generationTime.inMilliseconds}ms '
                   '(sampling ${s.samplingTime?.inMilliseconds ?? '?'}ms) '
                   '${s.generationTokensPerSecond.toStringAsFixed(1)}tok/s '

@@ -11,6 +11,8 @@ final class VlStats extends Struct {
   external int promptTokens;
   @Int32()
   external int generatedTokens;
+  @Int32()
+  external int cachedTokens;
   @Double()
   external double promptMs;
   @Double()

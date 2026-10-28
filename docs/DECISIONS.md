@@ -4,6 +4,14 @@ Newest entries at the top. Each entry: date, decision/finding, rationale.
 
 ---
 
+## 2026-10-28 — Prompt-prefix KV cache (owner chose this speed-up)
+
+- The wrapper keeps the previous prompt's tokens and reuses the KV cache for the longest common prefix (`llama_memory_seq_rm`); only the tail is decoded. If a cache cannot remove part of a sequence (e.g. sliding-window attention, as in Gemma 3), it falls back to a clean context. A host test checks that output equals a fresh context.
+- iPhone 13, Qwen2.5-1.5B: 126 of ~240 prompt tokens reused; prompt time **~1.0 s → ~0.4 s**. Per message **2.6 s → 2.0 s** (≈1.6 s warm); 5 messages in 10.0 s; same answers (4/5).
+- Projection for 50 messages: **~80 s** (target 30 s). The JSON summary (24–55 tokens, 1.0–2.5 s) is now the largest cost. The next lever is to split classification from summarization (owner decision pending).
+
+---
+
 ## 2026-10-28 — First on-device measurements (Qwen2.5-1.5B-Instruct Q4_K_M)
 
 Device: iPhone 13 (A15, 4 GB), iOS 27.0.1, profile build, Metal (`MTL0`) with all layers offloaded, context 2048, greedy decoding, `triage.v1` prompt + GBNF grammar. Test set: **5 seed messages only** (full set of 50 pending).

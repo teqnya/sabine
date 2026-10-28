@@ -26,6 +26,7 @@ class GenerationResult {
     required this.text,
     required this.promptTokens,
     required this.generatedTokens,
+    required this.cachedTokens,
     required this.promptMs,
     required this.generationMs,
     required this.sampleMs,
@@ -36,6 +37,9 @@ class GenerationResult {
   final String text;
   final int promptTokens;
   final int generatedTokens;
+
+  /// Leading prompt tokens reused from the previous call (not re-decoded).
+  final int cachedTokens;
   final double promptMs;
   final double generationMs;
 
@@ -139,6 +143,7 @@ class LlamaModel {
         ),
         promptTokens: s.promptTokens,
         generatedTokens: s.generatedTokens,
+        cachedTokens: s.cachedTokens,
         promptMs: s.promptMs,
         generationMs: s.generationMs,
         sampleMs: s.sampleMs,

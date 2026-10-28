@@ -71,6 +71,7 @@ class LlmResult {
     required this.generatedTokens,
     required this.promptEvalTime,
     required this.generationTime,
+    this.cachedPromptTokens = 0,
     this.samplingTime,
     this.footprintBytes,
     this.peakMemoryBytes,
@@ -79,6 +80,9 @@ class LlmResult {
   final String text;
   final int promptTokens;
   final int generatedTokens;
+
+  /// Leading prompt tokens reused from the previous request's cache.
+  final int cachedPromptTokens;
   final Duration promptEvalTime;
   final Duration generationTime;
 
