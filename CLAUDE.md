@@ -4,6 +4,8 @@ This file is the working brief for Claude Code. Read it fully before making chan
 
 ## 1. Product in one paragraph
 
+Product name: **Veltrio** (bundle ID `com.teqnya.veltrio`). Repo and Dart package: `sabine`.
+
 A Flutter mobile app (iPhone first, Android later) that acts as an **AI secretary for managers at mid-sized companies** (primary market: Germany/DACH). It reads the user's email and calendar, builds a daily brief, triages email, drafts replies in the user's style, and suggests meeting slots. **Everything runs on the device. There is no backend, no account system, no cloud database, and no message content ever leaves the phone.** Privacy is the product's headline feature.
 
 Core promise: "No account. No cloud. No copy of your mail on our side."

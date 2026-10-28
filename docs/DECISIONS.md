@@ -4,6 +4,14 @@ Newest entries at the top. Each entry: date, decision/finding, rationale.
 
 ---
 
+## 2026-10-28 — Product name and bundle ID
+
+- **Product name: Veltrio** (shown on the home screen and in the app title). Repo, folder and Dart package stay `sabine` (internal only).
+- **Bundle ID: `com.teqnya.veltrio`** on iOS (RunnerTests: `com.teqnya.veltrio.RunnerTests`) and as the Android `applicationId`. The owner gave `Veltrio.teqnya.com` and chose its reverse-domain form. The Android `namespace` and Kotlin package stay `com.teqnya.sabine` (internal, not user-visible).
+- **Orphaned iOS 18.1 simulator `.dmg` (8.2 GB)** in `/System/Library/AssetsV2` is SIP-`restricted`, so `sudo rm` fails ("Operation not permitted"). Only `mobileassetd` can remove it, usually on its own or after a restart. SIP stays enabled.
+
+---
+
 ## 2026-10-28 — Signing, Xcode build setup, device identity
 
 - **Signing team:** Teqnya UG (haftungsbeschraenkt), team `3267CMJYRV` (paid), Apple ID teqnya.developer@gmail.com. Bundle ID `com.teqnya.sabine`.
