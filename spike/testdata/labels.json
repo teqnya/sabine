@@ -1,0 +1,37 @@
+[
+  {
+    "id": "m001",
+    "category": "urgent",
+    "expected_dates": ["2026-10-27T10:00"],
+    "expected_tasks": ["Approve hiring external service provider (~4,800 EUR)"],
+    "meeting_request": false
+  },
+  {
+    "id": "m002",
+    "category": "needs_decision",
+    "expected_dates": ["2026-11-04T14:00", "2026-11-05T10:00"],
+    "expected_tasks": ["Pick a slot for 45-min Q1 roadmap review"],
+    "meeting_request": true
+  },
+  {
+    "id": "m003",
+    "category": "fyi",
+    "expected_dates": ["2026-11-10"],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m004",
+    "category": "noise",
+    "expected_dates": [],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m005",
+    "category": "needs_decision",
+    "expected_dates": ["2026-11-07"],
+    "expected_tasks": ["Choose trade-fair booth offer A or B"],
+    "meeting_request": false
+  }
+]

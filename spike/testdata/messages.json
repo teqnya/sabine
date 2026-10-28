@@ -1,0 +1,42 @@
+[
+  {
+    "id": "m001",
+    "language": "de",
+    "from": "Jonas Becker <j.becker@beispiel-gmbh.de>",
+    "subject": "DRINGEND: Produktionsserver Werk 2 ausgefallen",
+    "date": "2026-10-27T07:42:00+01:00",
+    "body": "Hallo,\n\nseit 07:15 Uhr ist der Produktionsserver in Werk 2 nicht erreichbar. Die Linie steht. Wir brauchen bis 10 Uhr Ihre Freigabe, den externen Dienstleister zu beauftragen (Kosten ca. 4.800 EUR).\n\nGruß\nJonas Becker"
+  },
+  {
+    "id": "m002",
+    "language": "en",
+    "from": "Sarah Collins <sarah.collins@example-partner.com>",
+    "subject": "Meeting request: Q1 roadmap review",
+    "date": "2026-10-27T09:10:00+01:00",
+    "body": "Hi,\n\ncould we schedule 45 minutes next week to go through the Q1 roadmap? Tuesday 4 November at 14:00 or Wednesday 5 November at 10:00 would work for me.\n\nBest,\nSarah"
+  },
+  {
+    "id": "m003",
+    "language": "ar",
+    "from": "خالد منصور <k.mansour@example-trading.ae>",
+    "subject": "للعلم: تحديث جدول الشحنات",
+    "date": "2026-10-27T11:30:00+04:00",
+    "body": "مرحباً،\n\nللعلم فقط: تم تأجيل شحنة أكتوبر إلى يوم ١٠ نوفمبر بسبب الجمارك. لا حاجة لأي إجراء من طرفكم.\n\nمع التحية،\nخالد"
+  },
+  {
+    "id": "m004",
+    "language": "en",
+    "from": "TechWeekly <newsletter@techweekly.example>",
+    "subject": "This week: 10 productivity hacks for leaders",
+    "date": "2026-10-27T06:00:00+00:00",
+    "body": "Your weekly roundup is here! Discover 10 productivity hacks, our webinar on AI trends, and an exclusive 20% discount on our premium plan. Unsubscribe at any time."
+  },
+  {
+    "id": "m005",
+    "language": "de",
+    "from": "Petra Wolf <p.wolf@beispiel-gmbh.de>",
+    "subject": "Freigabe Budget Messestand 2027",
+    "date": "2026-10-26T16:05:00+01:00",
+    "body": "Hallo,\n\nanbei zwei Angebote für den Messestand auf der Hannover Messe 2027 (A: 38.000 EUR, B: 45.500 EUR). Bitte entscheiden Sie sich bis Freitag, 7. November, damit wir buchen können.\n\nViele Grüße\nPetra Wolf"
+  }
+]

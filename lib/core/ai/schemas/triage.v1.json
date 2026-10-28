@@ -1,0 +1,16 @@
+{
+  "$id": "triage.v1",
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "enum": ["urgent", "needs_decision", "fyi", "noise"]
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 160
+    }
+  },
+  "required": ["category", "summary"],
+  "additionalProperties": false
+}

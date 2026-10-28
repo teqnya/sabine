@@ -4,6 +4,29 @@ Newest entries at the top. Each entry: date, decision/finding, rationale.
 
 ---
 
+## 2026-10-28 — llama.cpp binding options (pending owner decision)
+
+Checked 2026-10-28:
+
+| Option | Status | iOS min | Notes |
+|---|---|---|---|
+| `llamadart` 0.16.5 (pub.dev) | Very active (released 2026-10-27) | **16.4** | Downloads prebuilt native binaries from GitHub releases at build time (SHA-256 verified). Large surface: LiteRT-LM, Stable Diffusion, web. No telemetry found in `lib/`; uses `package:http` only in the build hook. **Cannot target the iPhone 13 on iOS 15.8.1.** |
+| `llama_cpp_dart` 0.2.2 | Last release 2026-01-02 | n/a | Bindings only; we would build llama.cpp ourselves anyway. |
+| `fllama`, `maid_llm` | Stale (2024) | — | Rejected. |
+| `flutter_llama` 1.2.1 | Active, GitLab | not checked | Unknown maintainer; would need a full review. |
+| **Own thin FFI wrapper** + llama.cpp built as an XCFramework | — | **15.0 (to verify)** | Upstream `build-xcframework.sh` defaults to iOS 16.4, but the Metal code guards newer APIs with `@available`, so a 15.0 build may work. **Untested upstream on iOS 15.** Needs `cmake`. |
+
+## 2026-10-28 — Flutter toolchain (CLAUDE.md §11 step 1, continued)
+
+- Flutter **3.47.8** stable, Dart 3.13.7, in `~/development/flutter`. Flutter and Dart analytics are **disabled**.
+- Flutter's iOS templates default to **IPHONEOS_DEPLOYMENT_TARGET = 15.0**, so the project targets iOS 15.0 with no override.
+- `flutter doctor` warns that **Flutter is deprecating Intel-Mac hosts**. A future Flutter release will need an Apple Silicon Mac to build. Medium-term risk for this dev machine.
+- Connected device: **iPhone SE, iOS 27.0.1** (A15-class, chip ID 00008110). The iPhone 13 on iOS 15.8.1 named in the brief was not connected.
+- Android toolchain is incomplete (cmdline-tools missing). Not needed for the spike.
+- Free disk after the Flutter install: **~2.4 GB**.
+
+---
+
 ## 2026-10-28 — Setup decisions (owner)
 
 - **Disk:** cleared rebuildable caches in `~/Library/Caches` (Homebrew, Playwright, pnpm, Java, node-gyp), which freed about 2.7 GB of disk; **5.7 GB free** now. This is enough for the Flutter SDK and scaffold. **More space is still needed before the model downloads (~5 GB for 3 models).**
