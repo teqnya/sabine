@@ -18,6 +18,8 @@ typedef struct vl_stats {
     int32_t generated_tokens;
     double  prompt_ms;
     double  generation_ms;
+    // Part of generation_ms spent choosing tokens (incl. grammar checks).
+    double  sample_ms;
     // Process memory footprint (bytes) after generation, and its high-water mark.
     int64_t footprint_bytes;
     int64_t peak_footprint_bytes;
@@ -42,6 +44,10 @@ int32_t vl_generate(void * handle, const char * system, const char * user,
                     char * err, int32_t err_len);
 
 void vl_free(void * handle);
+
+// Writes a comma-separated list of available compute devices (e.g. "MTL0, CPU")
+// to buf. Returns the number of devices.
+int32_t vl_backend_info(char * buf, int32_t buf_len);
 
 // Current process memory footprint in bytes (what iOS uses for jetsam limits).
 int64_t vl_memory_footprint(void);

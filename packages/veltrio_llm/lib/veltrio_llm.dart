@@ -28,6 +28,7 @@ class GenerationResult {
     required this.generatedTokens,
     required this.promptMs,
     required this.generationMs,
+    required this.sampleMs,
     required this.footprintBytes,
     required this.peakFootprintBytes,
   });
@@ -37,6 +38,9 @@ class GenerationResult {
   final int generatedTokens;
   final double promptMs;
   final double generationMs;
+
+  /// Part of [generationMs] spent choosing tokens (incl. grammar checks).
+  final double sampleMs;
 
   /// -1 when the OS does not report it.
   final int footprintBytes;
@@ -68,6 +72,13 @@ class LlamaModel {
   }
 
   static void setLogging(bool enabled) => vlSetLogging(enabled ? 1 : 0);
+
+  /// Compute devices llama.cpp found, e.g. "MTL0, CPU".
+  static String backendInfo() => using((arena) {
+    final buf = arena<Uint8>(256).cast<Utf8>();
+    vlBackendInfo(buf, 256);
+    return buf.toDartString();
+  });
 
   static LlamaModel load(
     String path, {
@@ -130,6 +141,7 @@ class LlamaModel {
         generatedTokens: s.generatedTokens,
         promptMs: s.promptMs,
         generationMs: s.generationMs,
+        sampleMs: s.sampleMs,
         footprintBytes: s.footprintBytes,
         peakFootprintBytes: s.peakFootprintBytes,
       );

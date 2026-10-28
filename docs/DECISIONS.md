@@ -4,6 +4,30 @@ Newest entries at the top. Each entry: date, decision/finding, rationale.
 
 ---
 
+## 2026-10-28 — First on-device measurements (Qwen2.5-1.5B-Instruct Q4_K_M)
+
+Device: iPhone 13 (A15, 4 GB), iOS 27.0.1, profile build, Metal (`MTL0`) with all layers offloaded, context 2048, greedy decoding, `triage.v1` prompt + GBNF grammar. Test set: **5 seed messages only** (full set of 50 pending).
+
+| Metric | Value |
+|---|---|
+| Model file | 1,066 MB (Apache-2.0, sha256-verified) |
+| Load time | 16.6 s cold (first load after copy), 1.8–3.8 s warm |
+| Memory | footprint ~240 MB loaded, **peak 278 MB**; jetsam headroom ~1.85 GB (mmap'd weights are not counted against the limit) |
+| Prompt | ~250 tokens in ~1.0 s (~240 tok/s) |
+| Generation | **~22 tok/s**; 24–55 tokens per message (JSON + summary) |
+| Per message | **2.6 s** average; 5 messages in 13.0 s |
+| Accuracy | **4/5 (80%)**: de 2/2, ar 1/1, en 1/2. Miss: newsletter (m004) labelled noise, model said fyi |
+| Output validity | 5/5 valid JSON (grammar-constrained) |
+
+Findings:
+- **Grammar fast path:** applying the GBNF grammar to the full ~150k-token Qwen vocabulary on every step halved speed (9.7 tok/s). Checking only the chosen token, and masking the full vocabulary only when that token is rejected (as llama.cpp's `common_sampler` does), gives 22 tok/s. Sampling is now 30–70 ms per message.
+- **Timing bug fixed:** Metal decoding is asynchronous. Without `llama_synchronize` after the prompt, prompt time was billed to generation.
+- **Summary quality:** for the Arabic message the summary was generic and in English, although the prompt asks for the email's language. Needs prompt work or a separate summary pass.
+- **50-message target (< 30 s):** at 2.6 s per message, 50 messages take ~130 s, about 4× over target. Main costs: prompt processing (~40%) and summary tokens. Options: (1) reuse the KV cache for the fixed instruction prefix, (2) classify first with a short output and summarize only messages that matter, (3) a smaller model for triage.
+- `HOME` is not the app container when launched via devicectl. The Documents path now comes from a native channel. Autorun is triggered by a `Documents/autorun.txt` file.
+
+---
+
 ## 2026-10-28 — First app running on the device ✅
 
 - **Xcode 26.3 deploys to iOS 27.0.1.** The signed debug and profile builds of the placeholder app install and launch on the iPhone 13 (wireless, via `devicectl`). The Xcode 27 / Apple Silicon risk does not block the spike.

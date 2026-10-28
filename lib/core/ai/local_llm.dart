@@ -71,6 +71,7 @@ class LlmResult {
     required this.generatedTokens,
     required this.promptEvalTime,
     required this.generationTime,
+    this.samplingTime,
     this.footprintBytes,
     this.peakMemoryBytes,
   });
@@ -80,6 +81,9 @@ class LlmResult {
   final int generatedTokens;
   final Duration promptEvalTime;
   final Duration generationTime;
+
+  /// Part of [generationTime] spent choosing tokens (incl. grammar checks).
+  final Duration? samplingTime;
 
   /// Process memory footprint after generation, if the platform reports it.
   final int? footprintBytes;

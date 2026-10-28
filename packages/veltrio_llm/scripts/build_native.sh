@@ -65,7 +65,7 @@ build_target() {
 
   echo "==> [$target] linking libveltrio_llm.dylib"
   local libs=()
-  while IFS= read -r lib; do libs+=("$lib"); done < <(find "$build_dir" -name '*.a' | sort)
+  while IFS= read -r lib; do libs+=("$lib"); done < <(find "$build_dir" -name '*.a' ! -name combined.a | sort)
   xcrun libtool -static -o "$build_dir/combined.a" "${libs[@]}" 2>/dev/null
 
   local frameworks=(-framework Foundation -framework Accelerate)

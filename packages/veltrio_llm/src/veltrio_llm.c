@@ -1,12 +1,14 @@
 #include "veltrio_llm.h"
 
 #include <mach/mach.h>
+#include <math.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "ggml.h"
+#include "ggml-backend.h"
 #include "llama.h"
 
 typedef struct vl_handle {
@@ -196,22 +198,34 @@ int32_t vl_generate(void * handle, const char * system, const char * user,
     llama_tokenize(h->vocab, prompt, prompt_len, tokens, n_prompt, 1, 1);
     free(prompt);
 
-    struct llama_sampler * smpl = llama_sampler_chain_init(llama_sampler_chain_default_params());
+    // The grammar is kept out of the chain: checking only the chosen token
+    // against it is much cheaper than masking the whole vocabulary each step
+    // (same approach as llama.cpp's common_sampler_sample).
+    struct llama_sampler * grmr = NULL;
     if (grammar != NULL && grammar[0] != '\0') {
-        struct llama_sampler * g = llama_sampler_init_grammar(h->vocab, grammar, "root");
-        if (g == NULL) {
+        grmr = llama_sampler_init_grammar(h->vocab, grammar, "root");
+        if (grmr == NULL) {
             free(tokens);
-            llama_sampler_free(smpl);
             vl_set_err(err, err_len, "invalid grammar");
             return -1;
         }
-        llama_sampler_chain_add(smpl, g);
     }
+    struct llama_sampler * chain = llama_sampler_chain_init(llama_sampler_chain_default_params());
     if (temperature <= 0.0f) {
-        llama_sampler_chain_add(smpl, llama_sampler_init_greedy());
+        llama_sampler_chain_add(chain, llama_sampler_init_greedy());
     } else {
-        llama_sampler_chain_add(smpl, llama_sampler_init_temp(temperature));
-        llama_sampler_chain_add(smpl, llama_sampler_init_dist(seed));
+        llama_sampler_chain_add(chain, llama_sampler_init_temp(temperature));
+        llama_sampler_chain_add(chain, llama_sampler_init_dist(seed));
+    }
+
+    const int32_t n_vocab = llama_vocab_n_tokens(h->vocab);
+    llama_token_data * cand = malloc(sizeof(llama_token_data) * (size_t) n_vocab);
+    if (cand == NULL) {
+        free(tokens);
+        if (grmr) llama_sampler_free(grmr);
+        llama_sampler_free(chain);
+        vl_set_err(err, err_len, "out of memory");
+        return -1;
     }
 
     llama_memory_clear(llama_get_memory(h->ctx), 1);
@@ -219,17 +233,48 @@ int32_t vl_generate(void * handle, const char * system, const char * user,
     int32_t written = 0;
     int32_t generated = 0;
     int32_t rc = 0;
+    int64_t sample_us = 0;
 
     const int64_t t0 = ggml_time_us();
     if (llama_decode(h->ctx, llama_batch_get_one(tokens, n_prompt)) != 0) {
         vl_set_err(err, err_len, "prompt decode failed");
         rc = -1;
     }
+    // Decoding is asynchronous on Metal; wait so prompt time is not billed
+    // to the first generated token.
+    llama_synchronize(h->ctx);
     const int64_t t1 = ggml_time_us();
 
     char piece[256];
     while (rc == 0 && generated < max_tokens) {
-        llama_token tok = llama_sampler_sample(smpl, h->ctx, -1);
+        llama_synchronize(h->ctx);
+        const int64_t ts = ggml_time_us();
+        const float * logits = llama_get_logits_ith(h->ctx, -1);
+        for (int32_t i = 0; i < n_vocab; i++) {
+            cand[i] = (llama_token_data) { i, logits[i], 0.0f };
+        }
+        llama_token_data_array cur = { cand, (size_t) n_vocab, -1, false };
+        llama_sampler_apply(chain, &cur);
+        llama_token tok = cur.data[cur.selected].id;
+
+        if (grmr != NULL) {
+            llama_token_data single = { tok, 1.0f, 0.0f };
+            llama_token_data_array one = { &single, 1, -1, false };
+            llama_sampler_apply(grmr, &one);
+            if (single.logit == -INFINITY) {
+                for (int32_t i = 0; i < n_vocab; i++) {
+                    cand[i] = (llama_token_data) { i, logits[i], 0.0f };
+                }
+                cur = (llama_token_data_array) { cand, (size_t) n_vocab, -1, false };
+                llama_sampler_apply(grmr, &cur);
+                llama_sampler_apply(chain, &cur);
+                tok = cur.data[cur.selected].id;
+            }
+            llama_sampler_accept(grmr, tok);
+        }
+        llama_sampler_accept(chain, tok);
+        sample_us += ggml_time_us() - ts;
+
         if (llama_vocab_is_eog(h->vocab, tok)) break;
         generated++;
 
@@ -253,9 +298,12 @@ int32_t vl_generate(void * handle, const char * system, const char * user,
             rc = -1;
         }
     }
+    llama_synchronize(h->ctx);
     const int64_t t2 = ggml_time_us();
 
-    llama_sampler_free(smpl);
+    free(cand);
+    if (grmr) llama_sampler_free(grmr);
+    llama_sampler_free(chain);
     free(tokens);
 
     if (stats != NULL) {
@@ -263,6 +311,7 @@ int32_t vl_generate(void * handle, const char * system, const char * user,
         stats->generated_tokens = generated;
         stats->prompt_ms = (double) (t1 - t0) / 1000.0;
         stats->generation_ms = (double) (t2 - t1) / 1000.0;
+        stats->sample_ms = (double) sample_us / 1000.0;
         vl_footprint(&stats->footprint_bytes, &stats->peak_footprint_bytes);
     }
     return rc == 0 ? written : -1;
@@ -274,4 +323,21 @@ void vl_free(void * handle) {
     llama_free(h->ctx);
     llama_model_free(h->model);
     free(h);
+}
+
+int32_t vl_backend_info(char * buf, int32_t buf_len) {
+    if (!vl_backend_ready) {
+        llama_log_set(vl_log_cb, NULL);
+        llama_backend_init();
+        ggml_time_init();
+        vl_backend_ready = 1;
+    }
+    const size_t n = ggml_backend_dev_count();
+    int32_t used = 0;
+    if (buf != NULL && buf_len > 0) buf[0] = '\0';
+    for (size_t i = 0; i < n && buf != NULL && used < buf_len; i++) {
+        used += snprintf(buf + used, (size_t) (buf_len - used), "%s%s",
+                         i == 0 ? "" : ", ", ggml_backend_dev_name(ggml_backend_dev_get(i)));
+    }
+    return (int32_t) n;
 }

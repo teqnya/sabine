@@ -25,7 +25,9 @@ class _SpikeScreenState extends State<SpikeScreen> {
   TestDataset? _dataset;
   TriagePrompt? _prompt;
   List<File> _models = const [];
-  File? _selectedModel;
+
+  /// Path of the selected model (paths compare by value; File objects do not).
+  String? _selectedModel;
   ModelInfo? _loaded;
   String? _selectedMessageId;
 
@@ -81,19 +83,25 @@ class _SpikeScreenState extends State<SpikeScreen> {
     await _autorun();
   }
 
-  /// Spike-only: when launched with `VELTRIO_AUTORUN=model.gguf`, loads
+  /// Spike-only: when launched with `VELTRIO_AUTORUN=model.gguf`, or when
+  /// Documents/autorun.txt holds a model file name (consumed once), loads
   /// that model, runs the batch and prints results to the console so runs can
   /// be repeated and captured from the Mac. Prints ids, labels and metrics for
   /// the synthetic test set only.
   Future<void> _autorun() async {
-    final name = Platform.environment['VELTRIO_AUTORUN'];
+    var name = Platform.environment['VELTRIO_AUTORUN'];
+    final trigger = File('$_documentsDir/autorun.txt');
+    if (name == null && trigger.existsSync()) {
+      name = trigger.readAsStringSync().trim();
+      trigger.deleteSync();
+    }
     if (name == null || _dataset == null) return;
     final match = _models.where((f) => f.uri.pathSegments.last == name);
     if (match.isEmpty) {
       _log('ERROR model $name not found in Documents');
       return;
     }
-    setState(() => _selectedModel = match.first);
+    setState(() => _selectedModel = match.first.path);
     await _load();
     final loaded = _loaded;
     if (loaded == null) {
@@ -102,7 +110,8 @@ class _SpikeScreenState extends State<SpikeScreen> {
     }
     _log(
       'LOADED ${loaded.name} in ${_secs(loaded.loadTime)}; '
-      'footprint ${_mb(LlamaModel.memoryFootprint())}',
+      'footprint ${_mb(LlamaModel.memoryFootprint())}; '
+      'devices ${LlamaModel.backendInfo()}',
     );
     await _runAll();
     final report = _report;
@@ -117,6 +126,7 @@ class _SpikeScreenState extends State<SpikeScreen> {
         'expected=${r.label.category.wire} got=${r.result?.category.wire ?? 'error'} '
         '${s == null ? '' : 'prompt=${s.promptTokens}tok/${s.promptEvalTime.inMilliseconds}ms '
                   'gen=${s.generatedTokens}tok/${s.generationTime.inMilliseconds}ms '
+                  '(sampling ${s.samplingTime?.inMilliseconds ?? '?'}ms) '
                   '${s.generationTokensPerSecond.toStringAsFixed(1)}tok/s '
                   'peak=${s.peakMemoryBytes == null ? '?' : _mb(s.peakMemoryBytes!)}'}'
         '${r.truncated ? ' truncated' : ''}'
@@ -164,8 +174,8 @@ class _SpikeScreenState extends State<SpikeScreen> {
     setState(() {
       _models = models;
       if (_selectedModel == null ||
-          !models.any((m) => m.path == _selectedModel!.path)) {
-        _selectedModel = models.isEmpty ? null : models.first;
+          !models.any((m) => m.path == _selectedModel)) {
+        _selectedModel = models.isEmpty ? null : models.first.path;
       }
     });
   }
@@ -189,9 +199,7 @@ class _SpikeScreenState extends State<SpikeScreen> {
   }
 
   Future<void> _load() => _guard('Loading model…', () async {
-    final info = await _llm.load(
-      LlmLoadConfig(modelPath: _selectedModel!.path),
-    );
+    final info = await _llm.load(LlmLoadConfig(modelPath: _selectedModel!));
     setState(() => _loaded = info);
   });
 
@@ -302,13 +310,13 @@ class _SpikeScreenState extends State<SpikeScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DropdownButton<File>(
+        DropdownButton<String>(
           isExpanded: true,
           value: _selectedModel,
           items: [
             for (final f in _models)
               DropdownMenuItem(
-                value: f,
+                value: f.path,
                 child: Text(
                   '${f.uri.pathSegments.last} (${_mb(f.lengthSync())})',
                   overflow: TextOverflow.ellipsis,

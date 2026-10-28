@@ -25,6 +25,8 @@ void main(List<String> args) async {
     final lib = input.packageRoot.resolve(
       'native/$target/libveltrio_llm.dylib',
     );
+    // Depend on the path even when missing, so building it later re-runs the hook.
+    output.dependencies.add(lib);
     if (!File.fromUri(lib).existsSync()) {
       // A missing iPhone library makes the app useless, so fail the build.
       // On macOS (host tests) tests skip instead.
@@ -45,7 +47,6 @@ void main(List<String> args) async {
         file: lib,
       ),
     );
-    output.dependencies.add(lib);
   });
 }
 

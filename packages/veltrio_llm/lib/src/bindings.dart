@@ -15,6 +15,8 @@ final class VlStats extends Struct {
   external double promptMs;
   @Double()
   external double generationMs;
+  @Double()
+  external double sampleMs;
   @Int64()
   external int footprintBytes;
   @Int64()
@@ -76,6 +78,9 @@ external int vlGenerate(
 
 @Native<Void Function(Pointer<Void>)>(symbol: 'vl_free')
 external void vlFree(Pointer<Void> handle);
+
+@Native<Int32 Function(Pointer<Utf8>, Int32)>(symbol: 'vl_backend_info')
+external int vlBackendInfo(Pointer<Utf8> buf, int bufLen);
 
 @Native<Int64 Function()>(symbol: 'vl_memory_footprint')
 external int vlMemoryFootprint();

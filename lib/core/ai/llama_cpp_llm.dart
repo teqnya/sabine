@@ -51,6 +51,7 @@ class LlamaCppLlm implements LocalLlm {
       generatedTokens: r['generatedTokens'] as int,
       promptEvalTime: _ms(r['promptMs'] as double),
       generationTime: _ms(r['generationMs'] as double),
+      samplingTime: _ms(r['sampleMs'] as double),
       footprintBytes: _nonNegative(r['footprint'] as int),
       peakMemoryBytes: _nonNegative(r['peak'] as int),
     );
@@ -137,6 +138,7 @@ void _worker(SendPort ready) {
               'generatedTokens': r.generatedTokens,
               'promptMs': r.promptMs,
               'generationMs': r.generationMs,
+              'sampleMs': r.sampleMs,
               'footprint': r.footprintBytes,
               'peak': r.peakFootprintBytes,
             },
