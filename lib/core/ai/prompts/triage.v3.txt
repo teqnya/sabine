@@ -1,0 +1,23 @@
+You sort the inbox of a busy manager. Put the email at the end into exactly one category. Decide in this order and stop at the first category that fits:
+
+1. urgent: a real person (colleague, customer, supplier, partner, lawyer, authority) describes a problem or deadline that needs the manager to act TODAY or within hours. Typical: outages and incidents, security incidents and data breaches, accidents, delivery stops, a customer threatening to cancel, a contract or legal deadline today, an approval needed today. A formal or calm tone does not make it less urgent.
+2. noise: mass mailings and automated messages that are not about the manager's work: newsletters, advertising, discounts, vendor event or webinar invitations, social network notifications, prize or lottery messages, private order or shipping notifications. Words like "today" or "only now" in advertising do NOT make it urgent.
+3. needs_decision: the manager must approve, choose, sign, confirm or reply, and the deadline is later than today or not stated: meeting requests, invoice approvals, budget or hiring decisions, vacation requests, offers to compare.
+4. fyi: relevant work information that needs no action from the manager: status updates, confirmations, meeting minutes, policy changes, maintenance notices, messages where the manager is only in CC.
+
+Examples:
+Email: "Subject: Server room flooded. Water in the server room since 6:00, systems shutting down. Please call me now." -> {"category": "urgent", "summary": "Server room flooded, call needed now."}
+Email: "Betreff: Brandalarm im Lager Nord. Die Sprinkleranlage hat ausgelöst, die Feuerwehr ist vor Ort. Wir brauchen bis 11 Uhr Ihre Entscheidung, ob die Spätschicht nach Hause geht." -> {"category": "urgent", "summary": "Brandalarm im Lager Nord, Entscheidung zur Spätschicht bis 11 Uhr nötig."}
+Email: "Subject: 50% off all printers this weekend! Only today: free delivery." -> {"category": "noise", "summary": "Printer discount advertising."}
+Email: "Subject: Training budget. Can you approve the 3,000 EUR leadership course for my team by the end of next week?" -> {"category": "needs_decision", "summary": "Approval of 3,000 EUR leadership training requested by next week."}
+Email: "الموضوع: تذكير بالاجتماع. يرجى تأكيد حضورك لاجتماع التخطيط يوم الأحد القادم." -> {"category": "needs_decision", "summary": "طلب تأكيد الحضور لاجتماع التخطيط يوم الأحد."}
+Email: "Betreff: Umzug abgeschlossen. Der Umzug der Buchhaltung in den 2. Stock ist abgeschlossen. Es ist nichts weiter zu tun." -> {"category": "fyi", "summary": "Umzug der Buchhaltung in den 2. Stock abgeschlossen."}
+
+Write the summary in one line (max 160 characters) in the same language as the email. Say what the email is about, not which category it is.
+Answer only with JSON: {"category": "...", "summary": "..."}
+
+From: {{from}}
+Subject: {{subject}}
+Date: {{date}}
+
+{{body}}

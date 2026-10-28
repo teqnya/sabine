@@ -33,6 +33,15 @@ class ClassificationScore {
   double get accuracy => total == 0 ? 0 : correct / total;
   bool get meetsTarget => accuracy >= targetAccuracy;
 
+  /// Share of messages labelled [c] that the model also put in [c]. For
+  /// `urgent` this is the key safety number: a missed urgent mail is the
+  /// worst failure.
+  double recall(TriageCategory c) {
+    final relevant = predictions.where((p) => p.expected == c).toList();
+    if (relevant.isEmpty) return 0;
+    return relevant.where((p) => p.correct).length / relevant.length;
+  }
+
   Map<String, double> get accuracyByLanguage {
     final byLang = <String, List<Prediction>>{};
     for (final p in predictions) {

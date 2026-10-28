@@ -6,6 +6,7 @@ import 'package:veltrio_llm/veltrio_llm.dart' show LlamaModel;
 
 import '../../core/ai/llama_cpp_llm.dart';
 import '../../core/ai/local_llm.dart';
+import '../../core/ai/triage.dart';
 import 'test_dataset.dart';
 import 'triage_runner.dart';
 
@@ -23,7 +24,14 @@ class _SpikeScreenState extends State<SpikeScreen> {
   final _llm = LlamaCppLlm();
 
   TestDataset? _dataset;
-  TriagePrompt? _prompt;
+
+  /// All triage prompt versions, kept for comparison (see DECISIONS.md).
+  Map<String, TriagePrompt> _prompts = const {};
+  String _promptVersion = 'triage.v3';
+  TriagePrompt? get _prompt => _prompts[_promptVersion];
+
+  /// Deterministic noise rules before the model (features/triage/noise_rules).
+  bool _useNoiseRules = true;
   List<File> _models = const [];
 
   /// Path of the selected model (paths compare by value; File objects do not).
@@ -53,8 +61,7 @@ class _SpikeScreenState extends State<SpikeScreen> {
 
   static const _platform = MethodChannel('veltrio/platform');
 
-  /// Triage prompt in use; v1 is kept for comparison (see DECISIONS.md).
-  static const _promptVersion = 'triage.v2';
+  static const _promptVersions = ['triage.v1', 'triage.v2', 'triage.v3'];
 
   /// Set from the native `veltrio/paths` channel in [_init].
   static String _documentsDir = '';
@@ -70,17 +77,21 @@ class _SpikeScreenState extends State<SpikeScreen> {
       final results = await Future.wait([
         rootBundle.loadString('spike/testdata/messages.json'),
         rootBundle.loadString('spike/testdata/labels.json'),
-        rootBundle.loadString('lib/core/ai/prompts/$_promptVersion.txt'),
         rootBundle.loadString('lib/core/ai/schemas/triage.v1.gbnf'),
+        for (final v in _promptVersions)
+          rootBundle.loadString('lib/core/ai/prompts/$v.txt'),
       ]);
       final ds = TestDataset.parse(results[0], results[1]);
       setState(() {
         _dataset = ds;
-        _prompt = TriagePrompt(
-          version: _promptVersion,
-          template: results[2],
-          grammar: results[3],
-        );
+        _prompts = {
+          for (final (i, v) in _promptVersions.indexed)
+            v: TriagePrompt(
+              version: v,
+              template: results[3 + i],
+              grammar: results[2],
+            ),
+        };
         _selectedMessageId = ds.messages.first.id;
       });
     } catch (e) {
@@ -91,16 +102,35 @@ class _SpikeScreenState extends State<SpikeScreen> {
   }
 
   /// Spike-only: when launched with `VELTRIO_AUTORUN=model.gguf`, or when
-  /// Documents/autorun.txt holds a model file name (consumed once), loads
-  /// that model, runs the batch and prints results to the console so runs can
-  /// be repeated and captured from the Mac. Prints ids, labels and metrics for
+  /// Documents/autorun.txt exists (consumed once), loads the model, runs the
+  /// batch and logs results (see [_log]) so runs can be repeated from the Mac.
+  /// autorun.txt: first line is the model file name; optional further lines
+  /// `prompt=triage.v3` and `rules=on|off`. Logs ids, labels and metrics for
   /// the synthetic test set only.
   Future<void> _autorun() async {
     var name = Platform.environment['VELTRIO_AUTORUN'];
     final trigger = File('$_documentsDir/autorun.txt');
     if (name == null && trigger.existsSync()) {
-      name = trigger.readAsStringSync().trim();
+      final lines = trigger
+          .readAsLinesSync()
+          .map((l) => l.trim())
+          .where((l) => l.isNotEmpty)
+          .toList();
       trigger.deleteSync();
+      if (lines.isNotEmpty) name = lines.first;
+      for (final line in lines.skip(1)) {
+        final (key, value) = switch (line.split('=')) {
+          [final k, final v] => (k.trim(), v.trim()),
+          _ => ('', ''),
+        };
+        if (key == 'prompt' && _prompts.containsKey(value)) {
+          setState(() => _promptVersion = value);
+        } else if (key == 'rules') {
+          setState(() => _useNoiseRules = value == 'on');
+        } else {
+          _log('ERROR ignored autorun option "$line"');
+        }
+      }
     }
     if (name == null || _dataset == null) return;
     final match = _models.where((f) => f.uri.pathSegments.last == name);
@@ -128,6 +158,8 @@ class _SpikeScreenState extends State<SpikeScreen> {
     final remaining = LlamaModel.memoryLimitRemaining();
     _log(
       'SUMMARY accuracy=${_pct(score.accuracy)} (${score.correct}/${score.total}) '
+      'urgentRecall=${_pct(score.recall(TriageCategory.urgent))} '
+      'byRules=${report.decidedByRules} '
       'byLang=${score.accuracyByLanguage.map((k, v) => MapEntry(k, _pct(v)))} '
       'errors=${report.errors} wall=${_secs(report.wallTime)} '
       'avg=${_secs(report.averagePerMessage)}/msg '
@@ -146,6 +178,7 @@ class _SpikeScreenState extends State<SpikeScreen> {
                   '(sampling ${s.samplingTime?.inMilliseconds ?? '?'}ms) '
                   '${s.generationTokensPerSecond.toStringAsFixed(1)}tok/s '
                   'peak=${s.peakMemoryBytes == null ? '?' : _mb(s.peakMemoryBytes!)}'}'
+        '${r.rule == null ? '' : 'rule=${r.rule}'}'
         '${r.truncated ? ' truncated' : ''}'
         '${r.error == null ? '' : ' error="${r.error}" raw=${r.raw}'}';
   }
@@ -215,7 +248,13 @@ class _SpikeScreenState extends State<SpikeScreen> {
   Future<void> _runOne() => _guard('Running triage…', () async {
     final ds = _dataset!;
     final m = ds.messages.firstWhere((m) => m.id == _selectedMessageId);
-    final run = await runTriage(_llm, _prompt!, m, ds.labels[m.id]!);
+    final run = await runTriage(
+      _llm,
+      _prompt!,
+      m,
+      ds.labels[m.id]!,
+      useNoiseRules: _useNoiseRules,
+    );
     setState(() => _lastRun = run);
   });
 
@@ -227,6 +266,7 @@ class _SpikeScreenState extends State<SpikeScreen> {
     _cancel = false;
     _log(
       'START model=${_loaded?.name} prompt=${_prompt!.version} '
+      'rules=${_useNoiseRules ? 'on' : 'off'} '
       'messages=${_dataset!.messages.length}',
     );
     await _platform.invokeMethod<void>('setIdleTimerDisabled', true);
@@ -238,6 +278,7 @@ class _SpikeScreenState extends State<SpikeScreen> {
         onProgress: (done, total) => setState(() => _progress = (done, total)),
         onRun: (r) => _log(_runLine(r)),
         isCancelled: () => _cancel,
+        useNoiseRules: _useNoiseRules,
       );
       setState(() => _report = report);
       _logSummary(report);
@@ -278,6 +319,8 @@ class _SpikeScreenState extends State<SpikeScreen> {
           _modelSection(),
           if (ds != null && _loaded != null) ...[
             const Divider(height: 32),
+            _settingsSection(),
+            const SizedBox(height: 16),
             _messageSection(ds),
             const Divider(height: 32),
             _batchSection(ds),
@@ -407,6 +450,8 @@ class _SpikeScreenState extends State<SpikeScreen> {
           ),
           if (run.result != null) Text('Summary: ${run.result!.summary}'),
           if (run.error != null) Text('Error: ${run.error}'),
+          if (run.rule != null)
+            Text('Decided by rule ${run.rule} (no model call).'),
           if (run.truncated) const Text('Body clipped to fit the context.'),
           if (run.stats != null) Text(_statsLine(run.stats!)),
           const SizedBox(height: 4),
@@ -416,6 +461,35 @@ class _SpikeScreenState extends State<SpikeScreen> {
             style: const TextStyle(fontFamily: 'Menlo'),
           ),
         ],
+      ],
+    );
+  }
+
+  Widget _settingsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            const Text('Prompt: '),
+            DropdownButton<String>(
+              value: _promptVersion,
+              items: [
+                for (final v in _promptVersions)
+                  DropdownMenuItem(value: v, child: Text(v)),
+              ],
+              onChanged: _busy
+                  ? null
+                  : (v) => setState(() => _promptVersion = v!),
+            ),
+          ],
+        ),
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+          title: const Text('Noise rules before the model'),
+          value: _useNoiseRules,
+          onChanged: _busy ? null : (v) => setState(() => _useNoiseRules = v),
+        ),
       ],
     );
   }
@@ -449,6 +523,10 @@ class _SpikeScreenState extends State<SpikeScreen> {
           Text(
             'Accuracy: ${_pct(score.accuracy)} (${score.correct}/${score.total}) '
             '${score.meetsTarget ? '— meets 85% target' : '— below 85% target'}',
+          ),
+          Text(
+            'Urgent caught: ${_pct(score.recall(TriageCategory.urgent))} · '
+            'decided by rules: ${report.decidedByRules}',
           ),
           Text(
             'By language: ${score.accuracyByLanguage.entries.map((e) => '${e.key} ${_pct(e.value)}').join(', ')}',

@@ -1,5 +1,6 @@
 import '../../core/ai/local_llm.dart';
 import '../../core/ai/triage.dart';
+import '../triage/noise_rules.dart';
 import 'classification_score.dart';
 import 'test_dataset.dart';
 
@@ -44,6 +45,7 @@ class TriageRun {
     required this.message,
     required this.label,
     required this.truncated,
+    this.rule,
     this.raw,
     this.result,
     this.error,
@@ -53,6 +55,9 @@ class TriageRun {
   final TestMessage message;
   final TestLabel label;
   final bool truncated;
+
+  /// Deterministic rule that decided the category; null if the model did.
+  final String? rule;
 
   /// Model output; null if generation itself failed.
   final String? raw;
@@ -76,9 +81,26 @@ Future<TriageRun> runTriage(
   LocalLlm llm,
   TriagePrompt prompt,
   TestMessage message,
-  TestLabel label,
-) async {
+  TestLabel label, {
+  bool useNoiseRules = false,
+}) async {
   final (text, truncated) = prompt.render(message);
+  if (useNoiseRules) {
+    final rule = matchNoiseRule(
+      from: message.from,
+      subject: message.subject,
+      body: message.body,
+    );
+    if (rule != null) {
+      return TriageRun(
+        message: message,
+        label: label,
+        truncated: false,
+        rule: rule,
+        result: const TriageResult(category: TriageCategory.noise, summary: ''),
+      );
+    }
+  }
   final LlmResult stats;
   try {
     stats = await llm.generate(
@@ -143,6 +165,8 @@ class BatchReport {
   }
 
   int get errors => runs.where((r) => r.error != null).length;
+
+  int get decidedByRules => runs.where((r) => r.rule != null).length;
 }
 
 /// Runs every message in order, one at a time. [isCancelled] is checked
@@ -154,12 +178,19 @@ Future<BatchReport> runBatch(
   void Function(int done, int total)? onProgress,
   void Function(TriageRun run)? onRun,
   bool Function()? isCancelled,
+  bool useNoiseRules = false,
 }) async {
   final sw = Stopwatch()..start();
   final runs = <TriageRun>[];
   for (final m in dataset.messages) {
     if (isCancelled?.call() ?? false) break;
-    final run = await runTriage(llm, prompt, m, dataset.labels[m.id]!);
+    final run = await runTriage(
+      llm,
+      prompt,
+      m,
+      dataset.labels[m.id]!,
+      useNoiseRules: useNoiseRules,
+    );
     runs.add(run);
     onRun?.call(run);
     onProgress?.call(runs.length, dataset.messages.length);
