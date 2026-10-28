@@ -4,6 +4,29 @@ Newest entries at the top. Each entry: date, decision/finding, rationale.
 
 ---
 
+## 2026-10-28 — Prompt v3 + deterministic noise rules (Qwen2.5-1.5B, iPhone 13)
+
+50 messages, proposed labels. Both runs back to back (the phone was warm for the second).
+
+| | v2 | v3, rules off | v3, rules on |
+|---|---|---|---|
+| Accuracy | 78% | **86% (43/50)** | **88% (44/50)** |
+| Urgent recall | 5/10 | 6/10 | 6/10 |
+| de / en / ar | 65 / 83 / 92% | 80 / 83 / 100% | 85 / 83 / 100% |
+| Decided by rules | — | — | 11/11 noise, 0 false positives |
+| Time for 50 | 83 s | 94 s | 101 s (19.2 tok/s vs 23.5: likely thermal throttling) |
+| Peak memory | 274 MB | 286 MB | 288 MB |
+
+Remaining misses (rules on): m017 and m025 urgent → noise; m011 and m029 urgent → needs_decision; m010 needs_decision → fyi; m032 fyi → noise.
+
+Findings:
+- Checking urgent first (v3) clearly helps (+8 points), but the model still files 2 urgent business mails as noise.
+- The noise rules are precise on this set. **Caveat:** the set is small and synthetic, so the rules need checking on real mail (with `List-Unsubscribe` headers) before trusting them.
+- **Thermal:** generation speed fell ~18% in the second consecutive 50-message run. A 50-message brief at 1.5–2 s per message keeps the A15 under sustained load.
+- Proposed next step: when rules are on, remove `noise` from the model's grammar, so the model cannot hide a business mail as noise. The worst case becomes an advert shown as fyi.
+
+---
+
 ## 2026-10-28 — 50-message run: prompt v1 vs v2 (Qwen2.5-1.5B, iPhone 13)
 
 Labels are still the **proposed** labels (owner review pending).
