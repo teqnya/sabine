@@ -145,13 +145,16 @@ Future<BatchReport> runBatch(
   TriagePrompt prompt,
   TestDataset dataset, {
   void Function(int done, int total)? onProgress,
+  void Function(TriageRun run)? onRun,
   bool Function()? isCancelled,
 }) async {
   final sw = Stopwatch()..start();
   final runs = <TriageRun>[];
   for (final m in dataset.messages) {
     if (isCancelled?.call() ?? false) break;
-    runs.add(await runTriage(llm, prompt, m, dataset.labels[m.id]!));
+    final run = await runTriage(llm, prompt, m, dataset.labels[m.id]!);
+    runs.add(run);
+    onRun?.call(run);
     onProgress?.call(runs.length, dataset.messages.length);
   }
   return BatchReport(runs, sw.elapsed);

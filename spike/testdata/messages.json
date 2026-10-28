@@ -13,7 +13,7 @@
     "from": "Sarah Collins <sarah.collins@example-partner.com>",
     "subject": "Meeting request: Q1 roadmap review",
     "date": "2026-10-27T09:10:00+01:00",
-    "body": "Hi,\n\ncould we schedule 45 minutes next week to go through the Q1 roadmap? Tuesday 4 November at 14:00 or Wednesday 5 November at 10:00 would work for me.\n\nBest,\nSarah"
+    "body": "Hi,\n\ncould we schedule 45 minutes next week to go through the Q1 roadmap? Tuesday 3 November at 14:00 or Wednesday 4 November at 10:00 would work for me.\n\nBest,\nSarah"
   },
   {
     "id": "m003",
@@ -37,6 +37,366 @@
     "from": "Petra Wolf <p.wolf@beispiel-gmbh.de>",
     "subject": "Freigabe Budget Messestand 2027",
     "date": "2026-10-26T16:05:00+01:00",
-    "body": "Hallo,\n\nanbei zwei Angebote für den Messestand auf der Hannover Messe 2027 (A: 38.000 EUR, B: 45.500 EUR). Bitte entscheiden Sie sich bis Freitag, 7. November, damit wir buchen können.\n\nViele Grüße\nPetra Wolf"
+    "body": "Hallo,\n\nanbei zwei Angebote für den Messestand auf der Hannover Messe 2027 (A: 38.000 EUR, B: 45.500 EUR). Bitte entscheiden Sie sich bis Freitag, 6. November, damit wir buchen können.\n\nViele Grüße\nPetra Wolf"
+  },
+  {
+    "id": "m006",
+    "language": "de",
+    "from": "IT-Sicherheit <security@beispiel-gmbh.de>",
+    "subject": "Sicherheitsvorfall: Phishing – Freigabe Passwort-Reset heute",
+    "date": "2026-10-28T08:20:00+01:00",
+    "body": "Guten Morgen,\n\nheute Nacht haben drei Mitarbeitende im Vertrieb ihre Zugangsdaten auf einer Phishing-Seite eingegeben. Wir sehen bereits Anmeldeversuche aus dem Ausland. Wir möchten um 14:00 Uhr alle Passwörter im Vertrieb zurücksetzen und die Sitzungen beenden. Das unterbricht die Arbeit für ca. 30 Minuten.\n\nBitte geben Sie das bis spätestens 12:00 Uhr frei.\n\nDanke\nLena Hartmann, IT-Sicherheit"
+  },
+  {
+    "id": "m007",
+    "language": "en",
+    "from": "Priya Nair <priya.nair@example-cloud.com>",
+    "subject": "Renewal call next week?",
+    "date": "2026-10-27T15:20:00+01:00",
+    "body": "Hi,\n\nyour cloud contract renews on 1 December. I'd like to walk you through the new pricing tiers. Would Monday 2 November at 10:00 or Thursday 5 November at 15:30 work for a 30-minute call?\n\nThanks,\nPriya"
+  },
+  {
+    "id": "m008",
+    "language": "de",
+    "from": "Fachverlag Management <newsletter@fachverlag.example>",
+    "subject": "Webinar: Führung in Zeiten von KI – jetzt anmelden",
+    "date": "2026-10-27T06:30:00+01:00",
+    "body": "Liebe Leserinnen und Leser,\n\nin unserem kostenlosen Webinar erfahren Sie, wie KI Ihre Führungsarbeit verändert. Außerdem: 30 % Rabatt auf unser Jahresabo. Hier abmelden."
+  },
+  {
+    "id": "m009",
+    "language": "de",
+    "from": "Zahlungsverkehr <zahlungen@beispiel-bank.de>",
+    "subject": "Zahlungsbestätigung Rechnung 2026-1187",
+    "date": "2026-10-27T07:00:00+01:00",
+    "body": "Sehr geehrte Damen und Herren,\n\ndie Zahlung über 8.950,00 EUR an Muster Logistik AG (Rechnung 2026-1187) wurde am 27.10.2026 ausgeführt.\n\nIhre Beispiel Bank"
+  },
+  {
+    "id": "m010",
+    "language": "de",
+    "from": "Buchhaltung <buchhaltung@beispiel-gmbh.de>",
+    "subject": "Rechnungsfreigabe: Beratung Q3 (12.400 EUR)",
+    "date": "2026-10-27T10:00:00+01:00",
+    "body": "Hallo,\n\ndie Rechnung der Muster Consulting über 12.400 EUR netto für die Prozessberatung im Q3 liegt vor. Sie überschreitet Ihre Freigabegrenze nicht, braucht aber Ihre Unterschrift. Zahlungsziel ist der 6.11.\n\nDanke\nBuchhaltung"
+  },
+  {
+    "id": "m011",
+    "language": "en",
+    "from": "Mark Turner <m.turner@example-retail.com>",
+    "subject": "We need to talk today – contract at risk",
+    "date": "2026-10-28T09:05:00+01:00",
+    "body": "Hello,\n\nthird failed delivery this month. Our board meets tomorrow and I have been asked whether we should terminate our framework agreement with you. I would like a call with you personally today, before 17:00 your time, to understand what you will change.\n\nMark Turner\nHead of Procurement, Example Retail"
+  },
+  {
+    "id": "m012",
+    "language": "ar",
+    "from": "ليلى منصور <l.mansour@example-trading.ae>",
+    "subject": "طلب اجتماع لمراجعة الشراكة",
+    "date": "2026-10-27T13:00:00+04:00",
+    "body": "مرحباً،\n\nنود عقد اجتماع لمراجعة اتفاقية الشراكة للعام القادم. هل يناسبكم يوم الأحد ١ نوفمبر الساعة ١١ صباحاً أو يوم الاثنين ٢ نوفمبر الساعة ١ ظهراً؟\n\nمع الشكر،\nليلى"
+  },
+  {
+    "id": "m013",
+    "language": "ar",
+    "from": "متجر العروض <offers@example-shop.ae>",
+    "subject": "خصم ٣٠٪ لفترة محدودة!",
+    "date": "2026-10-27T07:00:00+04:00",
+    "body": "عروض نهاية الشهر! خصم ٣٠٪ على جميع الأجهزة الإلكترونية لمدة ٤٨ ساعة فقط. تسوق الآن. لإلغاء الاشتراك اضغط هنا."
+  },
+  {
+    "id": "m014",
+    "language": "en",
+    "from": "Facilities <facilities@example-corp.com>",
+    "subject": "Office closed Monday 2 November",
+    "date": "2026-10-27T12:00:00+01:00",
+    "body": "Dear colleagues,\n\nthe Munich office will be closed on Monday 2 November for electrical maintenance. Please work from home that day. No action is needed if you have no deliveries planned.\n\nFacilities Team"
+  },
+  {
+    "id": "m015",
+    "language": "de",
+    "from": "Sabine Roth <s.roth@beispiel-gmbh.de>",
+    "subject": "Protokoll Teammeeting 26.10.",
+    "date": "2026-10-26T17:30:00+01:00",
+    "body": "Hallo zusammen,\n\nanbei das Protokoll vom heutigen Teammeeting. Kurz zusammengefasst: Release 4.2 ist auf Kurs, die Kundenbefragung startet nächste Woche, und das Offsite findet am 20.11. statt. Es sind keine Aufgaben für dich offen.\n\nGruß\nSabine"
+  },
+  {
+    "id": "m016",
+    "language": "en",
+    "from": "Network Updates <notifications@social.example>",
+    "subject": "You appeared in 12 searches this week",
+    "date": "2026-10-27T05:00:00+00:00",
+    "body": "You appeared in 12 searches this week. See who's looking at your profile. Try Premium free for one month."
+  },
+  {
+    "id": "m017",
+    "language": "de",
+    "from": "Stefan Klein <s.klein@zulieferer-beispiel.de>",
+    "subject": "Lieferstopp Aluminiumprofile ab morgen",
+    "date": "2026-10-28T10:40:00+01:00",
+    "body": "Sehr geehrte Damen und Herren,\n\naufgrund eines Brandes in unserem Presswerk können wir ab morgen keine Aluminiumprofile mehr liefern. Wir können Ihnen kurzfristig Material aus unserem Werk in Polen anbieten, allerdings mit 18 % Aufpreis. Ohne Ihre Zusage bis heute 16:00 Uhr vergeben wir die Kapazität anderweitig.\n\nMit freundlichen Grüßen\nStefan Klein"
+  },
+  {
+    "id": "m018",
+    "language": "en",
+    "from": "HR Team <hr@example-corp.com>",
+    "subject": "Final decision needed: Senior Controller",
+    "date": "2026-10-27T11:45:00+01:00",
+    "body": "Hi,\n\nboth finalists for the Senior Controller role have completed their interviews. Candidate A has stronger SAP experience; candidate B has led a team before but asks for 8% more salary. Please let us know your choice by Friday 30 October so we can send the offer.\n\nBest regards,\nHR"
+  },
+  {
+    "id": "m019",
+    "language": "ar",
+    "from": "سارة العلي <s.alali@example-pay.ae>",
+    "subject": "عاجل: توقف نظام الدفع الإلكتروني",
+    "date": "2026-10-28T09:15:00+04:00",
+    "body": "مرحباً،\n\nمنذ الساعة الثامنة صباحاً لا يستطيع العملاء إتمام الدفع في المتجر الإلكتروني. فريقنا يقترح الرجوع إلى الإصدار السابق فوراً، لكن ذلك يحتاج إلى موافقتك لأنه سيوقف المتجر لمدة ساعة.\n\nنرجو الرد بأسرع وقت.\n\nسارة"
+  },
+  {
+    "id": "m020",
+    "language": "ar",
+    "from": "قسم المبيعات <sales@example-trading.ae>",
+    "subject": "تقرير المبيعات الشهري - أكتوبر",
+    "date": "2026-10-28T08:00:00+04:00",
+    "body": "مرحباً،\n\nمرفق تقرير المبيعات لشهر أكتوبر. ارتفعت المبيعات بنسبة ٧٪ مقارنة بالشهر الماضي. التقرير للاطلاع فقط ولا يتطلب أي إجراء.\n\nقسم المبيعات"
+  },
+  {
+    "id": "m021",
+    "language": "de",
+    "from": "Versand <versand@shop.example>",
+    "subject": "Ihre Bestellung wurde versandt",
+    "date": "2026-10-27T13:00:00+01:00",
+    "body": "Hallo,\n\nIhre Bestellung 302-1188 (USB-C-Kabel, 2 Stück) wurde versandt und kommt voraussichtlich morgen an. Sendungsverfolgung: siehe Link."
+  },
+  {
+    "id": "m022",
+    "language": "en",
+    "from": "Nina Petrova <n.petrova@example-corp.com>",
+    "subject": "Project Atlas – status green",
+    "date": "2026-10-27T18:00:00+01:00",
+    "body": "Hi,\n\nquick weekly update: Project Atlas is green. Data migration finished on schedule, user testing starts Monday, and the next milestone (go-live of phase 1) remains 15 November. Nothing needed from you this week.\n\nNina"
+  },
+  {
+    "id": "m023",
+    "language": "de",
+    "from": "Julia Neumann <j.neumann@beispiel-gmbh.de>",
+    "subject": "Terminanfrage Jahresgespräch",
+    "date": "2026-10-26T09:30:00+01:00",
+    "body": "Hallo,\n\nfür mein Jahresgespräch würde ich gern einen Termin vereinbaren. Mir würden Donnerstag, 5.11., 9:00 Uhr oder Freitag, 6.11., 13:00 Uhr passen. Wir bräuchten etwa eine Stunde.\n\nViele Grüße\nJulia"
+  },
+  {
+    "id": "m024",
+    "language": "en",
+    "from": "FutureLeaders Summit <events@summit.example>",
+    "subject": "Early bird ends Friday – save 40%",
+    "date": "2026-10-28T06:00:00+00:00",
+    "body": "Only 3 days left to save 40% on the FutureLeaders Summit 2027 in Lisbon. 80 speakers, 2,000 attendees. Book now!"
+  },
+  {
+    "id": "m025",
+    "language": "de",
+    "from": "Dr. Anna Vogt <datenschutz@beispiel-gmbh.de>",
+    "subject": "Datenpanne – Meldung an Aufsichtsbehörde",
+    "date": "2026-10-28T11:10:00+01:00",
+    "body": "Hallo,\n\ngestern Abend wurde eine Excel-Liste mit 1.200 Kundendaten versehentlich an einen externen Verteiler geschickt. Nach Art. 33 DSGVO müssen wir die Aufsichtsbehörde innerhalb von 72 Stunden informieren, also bis Freitag, 30.10., 18:00 Uhr. Den Entwurf der Meldung finden Sie im Anhang. Ich brauche heute Ihre Freigabe, damit wir morgen einreichen können.\n\nViele Grüße\nAnna Vogt, Datenschutzbeauftragte"
+  },
+  {
+    "id": "m026",
+    "language": "en",
+    "from": "Tom Fischer <t.fischer@example-corp.com>",
+    "subject": "Request: move 20k from travel to tooling",
+    "date": "2026-10-26T17:10:00+01:00",
+    "body": "Hi,\n\ntravel spend is well below plan this year. I'd like to move EUR 20,000 from the travel budget to tooling so we can buy the test automation licences before year end. Could you approve by 4 November?\n\nThanks,\nTom"
+  },
+  {
+    "id": "m027",
+    "language": "ar",
+    "from": "أحمد صالح <a.saleh@example-supplies.ae>",
+    "subject": "عرض سعر توريد الأجهزة",
+    "date": "2026-10-27T10:20:00+04:00",
+    "body": "تحية طيبة،\n\nنرفق لكم عرض السعر لتوريد ٤٠ جهاز حاسوب محمول بقيمة ٣٨٠٬٠٠٠ درهم. العرض صالح حتى يوم الخميس ٥ نوفمبر، ونرجو تأكيد الموافقة قبل ذلك التاريخ.\n\nمع التقدير،\nأحمد"
+  },
+  {
+    "id": "m028",
+    "language": "de",
+    "from": "IT-Service <it@beispiel-gmbh.de>",
+    "subject": "Wartungsfenster Samstag 31.10.",
+    "date": "2026-10-27T15:00:00+01:00",
+    "body": "Liebe Kolleginnen und Kollegen,\n\nam Samstag, 31.10., von 22:00 bis 02:00 Uhr werden die E-Mail-Server aktualisiert. In dieser Zeit ist E-Mail nicht erreichbar. Sie müssen nichts tun.\n\nIhr IT-Service"
+  },
+  {
+    "id": "m029",
+    "language": "en",
+    "from": "Claire Dubois <c.dubois@example-law.fr>",
+    "subject": "Signature needed today – share purchase agreement",
+    "date": "2026-10-28T13:30:00+01:00",
+    "body": "Dear all,\n\nthe counterparty has accepted our last changes. Their CEO leaves for a two-week trip tonight, so the agreement must be signed today by 18:00 CET, otherwise closing slips to mid-November. The DocuSign envelope has been sent to you.\n\nKind regards,\nClaire Dubois"
+  },
+  {
+    "id": "m030",
+    "language": "de",
+    "from": "Gewinnspiel <info@gewinn.example>",
+    "subject": "Herzlichen Glückwunsch! Sie haben gewonnen",
+    "date": "2026-10-28T04:12:00+01:00",
+    "body": "Sie wurden ausgewählt! Bestätigen Sie jetzt Ihre Daten, um Ihr neues Smartphone zu erhalten. Angebot nur heute gültig."
+  },
+  {
+    "id": "m031",
+    "language": "ar",
+    "from": "الموارد البشرية <hr@example-group.sa>",
+    "subject": "تحديث سياسة السفر",
+    "date": "2026-10-26T10:00:00+03:00",
+    "body": "إلى جميع الموظفين،\n\nتم تحديث سياسة السفر اعتباراً من ١ نوفمبر: يجب حجز الرحلات قبل أسبوعين على الأقل. السياسة الكاملة متاحة على البوابة الداخلية. هذه الرسالة للعلم فقط.\n\nالموارد البشرية"
+  },
+  {
+    "id": "m032",
+    "language": "en",
+    "from": "Daniel Wu <d.wu@example-corp.com>",
+    "subject": "RE: Login bug on mobile app",
+    "date": "2026-10-27T14:25:00+01:00",
+    "body": "Hi Ana,\n\nfound it – the token refresh used the wrong clock. Fix is merged and will ship with tonight's build. I've copied our manager for visibility only.\n\nDaniel\n\n> From: Ana Silva\n> The login fails for some users after the update, can you check?"
+  },
+  {
+    "id": "m033",
+    "language": "de",
+    "from": "Tobias Krüger <t.krueger@beispiel-gmbh.de>",
+    "subject": "Urlaubsantrag 21.12.–31.12.",
+    "date": "2026-10-27T08:50:00+01:00",
+    "body": "Hallo,\n\nich möchte vom 21.12. bis 31.12. Urlaub nehmen. Die Vertretung übernimmt Frau Schulz, sie ist informiert. Könnten Sie den Antrag im Portal genehmigen?\n\nDanke und Gruß\nTobias"
+  },
+  {
+    "id": "m034",
+    "language": "en",
+    "from": "Product News <news@saas-tool.example>",
+    "subject": "What's new in October",
+    "date": "2026-10-27T08:00:00+00:00",
+    "body": "Dark mode, faster exports and 12 new integrations – here's everything we shipped in October. Read the changelog on our blog."
+  },
+  {
+    "id": "m035",
+    "language": "ar",
+    "from": "النشرة الأسبوعية <weekly@news.example>",
+    "subject": "أهم أخبار الأسبوع في عالم الأعمال",
+    "date": "2026-10-28T06:00:00+03:00",
+    "body": "إليك أهم أخبار الأسبوع: أسعار النفط، أخبار الشركات الناشئة، ونصائح للإنتاجية. اقرأ المزيد على موقعنا."
+  },
+  {
+    "id": "m036",
+    "language": "de",
+    "from": "Markus Lange <m.lange@beispiel-gmbh.de>",
+    "subject": "AW: AW: AW: Standort Rechenzentrum – Entscheidung",
+    "date": "2026-10-28T10:15:00+01:00",
+    "body": "Hallo zusammen,\n\nich fasse den Stand zusammen, damit wir zu einer Entscheidung kommen:\n\nOption A: Ausbau des bestehenden Rechenzentrums in Kassel. Kosten ca. 1,2 Mio. EUR, Umsetzung bis Q3 2027, keine Migration nötig, aber begrenzte Erweiterbarkeit.\nOption B: Umzug in ein Colocation-Rechenzentrum in Frankfurt. Kosten ca. 900.000 EUR plus 15.000 EUR Miete pro Monat, Umsetzung bis Q2 2027, bessere Anbindung, aber Migrationsrisiko.\n\nIT und Einkauf empfehlen Option B, die Produktion bevorzugt Option A wegen der Nähe zum Werk. Wir brauchen Ihre Entscheidung bis Montag, 9.11., damit wir die Budgetplanung abschließen können.\n\nViele Grüße\nMarkus\n\n-----Ursprüngliche Nachricht-----\nVon: Petra Wolf\nGesendet: Dienstag, 27. Oktober 2026 16:02\nDer Einkauf hat die Angebote für Frankfurt geprüft. Die Miete ist verhandelbar, wir rechnen mit 10 % Nachlass bei fünf Jahren Laufzeit.\n\n-----Ursprüngliche Nachricht-----\nVon: Jonas Becker\nGesendet: Dienstag, 27. Oktober 2026 11:40\nAus Sicht der Produktion ist die Latenz zwischen Werk und Rechenzentrum wichtig. Mit Kassel haben wir aktuell 2 ms, Frankfurt läge bei etwa 8 ms. Für die Maschinensteuerung ist das unkritisch, für die Bildverarbeitung müssten wir es testen.\n\n-----Ursprüngliche Nachricht-----\nVon: Markus Lange\nGesendet: Montag, 26. Oktober 2026 09:12\nWie besprochen sammeln wir bis Mittwoch alle Argumente zu den beiden Optionen."
+  },
+  {
+    "id": "m037",
+    "language": "en",
+    "from": "Raj Patel <r.patel@example-corp.com>",
+    "subject": "RE: RE: RE: [INCIDENT] Checkout errors after release 7.3",
+    "date": "2026-10-28T11:50:00+01:00",
+    "body": "All,\n\nupdate 11:45: error rate is now 23% of checkouts and rising. The hotfix attempt at 11:20 did not help. We estimate EUR 40k lost revenue per hour. I recommend we roll back to 7.2 immediately; this will disable the new loyalty feature that marketing announced yesterday. I need the go-ahead from management because of the public announcement. Please reply or call me in the next 15 minutes.\n\nRaj (incident lead)\n\n-----Original Message-----\nFrom: Emma Schulz\nSent: Wednesday, 28 October 2026 11:22\nHotfix deployed to 10% of traffic. Error rate unchanged in that group, so it's not the cache config.\n\n-----Original Message-----\nFrom: Raj Patel\nSent: Wednesday, 28 October 2026 10:58\nError rate 14%. Logs point to the payment adapter. Emma, can you try the cache config fix?\n\n-----Original Message-----\nFrom: Monitoring\nSent: Wednesday, 28 October 2026 10:31\nALERT: checkout_error_rate above 5% for 10 minutes (current: 6.2%).\n\n-----Original Message-----\nFrom: Release Bot\nSent: Wednesday, 28 October 2026 10:05\nRelease 7.3 deployed to production. Changes: loyalty points at checkout, new payment adapter, UI fixes for the cart page, dependency updates."
+  },
+  {
+    "id": "m038",
+    "language": "ar",
+    "from": "ريم الحسن <r.alhassan@example-group.sa>",
+    "subject": "RE: RE: تنظيم حفل نهاية العام",
+    "date": "2026-10-27T17:45:00+03:00",
+    "body": "مرحباً جميعاً،\n\nبعد النقاش تم الاتفاق على النقاط التالية: سيقام حفل نهاية العام يوم الخميس ١٧ ديسمبر في قاعة الفندق المطلة على البحر، وسيكون العشاء في الساعة الثامنة مساءً. تم تأكيد الحجز ودفع العربون، وتم إرسال الدعوات إلى جميع الموظفين. فريق التسويق سيتولى العرض المرئي، وفريق الموارد البشرية سيتولى الجوائز. لا يوجد أي إجراء مطلوب من الإدارة، أرسل هذا للعلم فقط.\n\nشكراً للجميع،\nريم\n\n---\nمن: عمر فاروق\nاقترح أن نختار القاعة المطلة على البحر لأن السعر مناسب والموقع قريب من المكتب. هل يوافق الجميع؟\n\n---\nمن: ريم الحسن\nلدينا خياران للقاعة: قاعة الفندق في وسط المدينة أو القاعة المطلة على البحر. الرجاء إرسال آرائكم قبل نهاية الأسبوع حتى نتمكن من الحجز.\n\n---\nمن: هالة يوسف\nأقترح أن يكون الحفل في منتصف ديسمبر قبل بدء الإجازات، ويفضل يوم خميس."
+  },
+  {
+    "id": "m039",
+    "language": "en",
+    "from": "Procurement <procurement@example-corp.com>",
+    "subject": "RE: ERP selection – shortlist decision needed by 10 November",
+    "date": "2026-10-27T16:30:00+01:00",
+    "body": "Dear steering committee,\n\nthe evaluation team has finished the scoring of the four ERP vendors that responded to our RFP. Below is the summary. We need the steering committee to decide which two vendors go into the final proof-of-concept phase. Please send your decision by Tuesday 10 November, so the vendors can prepare the PoC for early December.\n\nVendor 1 – NordSoft: strongest functional fit (score 4.4/5), all mandatory requirements met, references from two automotive suppliers. Price: EUR 410,000 licence plus EUR 82,000 per year maintenance. Implementation estimate 9 months. Risk: small company (120 employees); we would need an escrow agreement for the source code.\n\nVendor 2 – GlobalERP: functional score 3.9/5, two mandatory requirements only via customisation (batch traceability and the EDI interface to our largest customer). Price: EUR 520,000 licence plus EUR 95,000 per year. Implementation 12 months with their partner. Strengths: market leader, strong support in Germany, long-term product roadmap.\n\nVendor 3 – CloudMake: functional score 4.1/5, SaaS only. Price: EUR 14,500 per month, no licence fee, implementation 6 months. Concern: data must be hosted in their EU region; our works council has asked for a review of the data processing agreement, and IT security flagged that the shop-floor terminals need a stable internet connection.\n\nVendor 4 – Example Industrial Systems: functional score 3.2/5, missing quality management module, would need a third-party add-on. Cheapest option at EUR 290,000 licence, but the total cost of ownership over five years is comparable to the others once the add-on and integration work are included.\n\nReference calls: NordSoft's references were very positive about responsiveness but mentioned that documentation is thin. GlobalERP's reference praised stability but described the implementation partner as expensive and slow to react to change requests. CloudMake's reference is only six months live, so long-term experience is limited.\n\nTotal cost of ownership over five years (licence, maintenance or subscription, implementation, internal effort): NordSoft approx. EUR 1.21 million, GlobalERP approx. EUR 1.58 million, CloudMake approx. EUR 1.17 million, Example Industrial Systems approx. EUR 1.15 million.\n\nRecommendation of the evaluation team: shortlist NordSoft and CloudMake, subject to the escrow agreement and the works council review. GlobalERP as a fallback if the works council does not approve the SaaS hosting.\n\nNext steps after your decision: invite the two vendors to the PoC kick-off (week of 16 November), prepare test data from our current system, and schedule the works council meeting.\n\nBest regards,\nProcurement & IT evaluation team\n\n-----Original Message-----\nFrom: CFO Office\nSent: Monday, 26 October 2026 09:00\nPlease make sure the five-year total cost of ownership is included for all vendors, not only the licence price. The budget approved by the board is EUR 1.4 million over five years.\n\n-----Original Message-----\nFrom: Procurement\nSent: Friday, 23 October 2026 15:45\nAll four RFP responses have been received. Scoring workshops are scheduled for Monday and Tuesday next week. We will circulate the results and a recommendation by Wednesday."
+  },
+  {
+    "id": "m040",
+    "language": "de",
+    "from": "Personalabteilung <personal@beispiel-gmbh.de>",
+    "subject": "25 Jahre Betriebszugehörigkeit – Herr Weber",
+    "date": "2026-10-26T08:30:00+01:00",
+    "body": "Liebe Führungskräfte,\n\nHerr Klaus Weber aus der Instandhaltung feiert am 2.11. sein 25-jähriges Jubiläum. Die Geschäftsführung überreicht die Urkunde persönlich. Zu Ihrer Information.\n\nIhre Personalabteilung"
+  },
+  {
+    "id": "m041",
+    "language": "en",
+    "from": "Office of the CEO <ceo-office@example-corp.com>",
+    "subject": "Board prep – Thursday 16:00",
+    "date": "2026-10-27T16:40:00+01:00",
+    "body": "Hello,\n\nthe CEO would like to prepare the November board meeting with you on Thursday 29 October at 16:00 in room 4.12. Please confirm whether you can attend, or propose another time on Friday.\n\nBest regards,\nOffice of the CEO"
+  },
+  {
+    "id": "m042",
+    "language": "ar",
+    "from": "يوسف حداد <y.haddad@example-group.sa>",
+    "subject": "العميل الرئيسي يهدد بإلغاء العقد",
+    "date": "2026-10-28T12:00:00+03:00",
+    "body": "السلام عليكم،\n\nاتصل بي مدير المشتريات لدى أكبر عملائنا وقال إنهم سيلغون العقد إذا لم نحل مشكلة التأخير هذا الأسبوع. يطلب مكالمة معك اليوم قبل الساعة الرابعة عصراً.\n\nيوسف"
+  },
+  {
+    "id": "m043",
+    "language": "de",
+    "from": "Business-Netzwerk <events@netzwerk.example>",
+    "subject": "Einladung: After-Work-Networking in Frankfurt",
+    "date": "2026-10-27T09:00:00+01:00",
+    "body": "Lernen Sie andere Entscheider kennen! Unser nächstes After-Work-Networking findet am 19.11. in Frankfurt statt. Premium-Mitglieder erhalten freien Eintritt."
+  },
+  {
+    "id": "m044",
+    "language": "en",
+    "from": "Strategy Office <strategy@example-corp.com>",
+    "subject": "Q3 OKR results published",
+    "date": "2026-10-28T09:00:00+01:00",
+    "body": "Hello,\n\nthe Q3 OKR results are now on the intranet. Overall attainment was 74%. Your department's results have already been discussed with you in the review. This is for your information.\n\nStrategy Office"
+  },
+  {
+    "id": "m045",
+    "language": "de",
+    "from": "Michael Braun <m.braun@beispiel-gmbh.de>",
+    "subject": "Arbeitsunfall Halle 3 – bitte sofort zurückrufen",
+    "date": "2026-10-28T14:05:00+01:00",
+    "body": "Hallo,\n\nin Halle 3 hat sich ein Mitarbeiter an der Presse verletzt und ist auf dem Weg ins Krankenhaus. Die Berufsgenossenschaft muss informiert werden und die Presse ist gesperrt. Bitte rufen Sie mich sofort zurück: 0170 0000000.\n\nMichael Braun, Schichtleiter"
+  },
+  {
+    "id": "m046",
+    "language": "ar",
+    "from": "منى الخطيب <m.alkhatib@example-group.sa>",
+    "subject": "طلب الموافقة على وظيفة جديدة",
+    "date": "2026-10-26T11:00:00+03:00",
+    "body": "مرحباً،\n\nفريق خدمة العملاء يعمل فوق طاقته منذ ثلاثة أشهر. نطلب موافقتك على توظيف موظف إضافي براتب سنوي ١٢٠٬٠٠٠ ريال. القرار مطلوب قبل اجتماع الميزانية القادم.\n\nمع الشكر،\nمنى"
+  },
+  {
+    "id": "m047",
+    "language": "en",
+    "from": "Example Analytics <marketing@analytics.example>",
+    "subject": "Webinar invite: Dashboards that executives love",
+    "date": "2026-10-28T07:30:00+00:00",
+    "body": "Join our 45-minute webinar on 12 November to see how leading companies build executive dashboards. Register today and get our free template pack."
+  },
+  {
+    "id": "m048",
+    "language": "de",
+    "from": "Kanzlei Muster <info@steuer-muster.example>",
+    "subject": "Eingangsbestätigung Unterlagen",
+    "date": "2026-10-27T11:20:00+01:00",
+    "body": "Sehr geehrte Damen und Herren,\n\nwir bestätigen den Eingang Ihrer Unterlagen für die Umsatzsteuer-Voranmeldung September. Wir melden uns, falls Rückfragen entstehen.\n\nMit freundlichen Grüßen\nKanzlei Muster"
+  },
+  {
+    "id": "m049",
+    "language": "ar",
+    "from": "حجوزات السفر <travel@example-group.sa>",
+    "subject": "تأكيد حجز الفندق - رحلة دبي",
+    "date": "2026-10-28T10:30:00+03:00",
+    "body": "مرحباً،\n\nتم تأكيد حجز الفندق في دبي من ١٢ إلى ١٤ نوفمبر. رقم الحجز ٤٥٨٢١. سيتم إرسال تذاكر الطيران بشكل منفصل.\n\nقسم حجوزات السفر"
+  },
+  {
+    "id": "m050",
+    "language": "de",
+    "from": "Fuhrpark <fuhrpark@beispiel-gmbh.de>",
+    "subject": "Angebotsvergleich Leasing Firmenwagen",
+    "date": "2026-10-26T14:30:00+01:00",
+    "body": "Hallo,\n\nanbei der Vergleich der drei Leasingangebote für die zwölf neuen Firmenwagen (Elektro). Angebot 2 ist am günstigsten, Angebot 3 hat die kürzeste Lieferzeit. Wir bräuchten Ihre Entscheidung bis Freitag, 13.11.\n\nViele Grüße\nFuhrparkmanagement"
   }
 ]

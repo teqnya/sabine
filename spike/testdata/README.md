@@ -27,4 +27,4 @@ The owner's ground truth. Every message needs exactly one entry.
 
 The loader (`lib/features/spike/test_dataset.dart`) rejects unknown categories, duplicate IDs, unlabeled messages and labels without a message.
 
-Status: 5 seed messages. Target: 50, spread across the three languages and across meeting requests, invoices, escalations, newsletters, internal FYIs and long threads.
+Status: 50 synthetic messages (de 20, en 18, ar 12; urgent 10, needs_decision 15, fyi 14, noise 11), including long threads m036, m037, m038 and m039 (m039 is over 3,000 characters, which tests body clipping). **The labels are proposals until the owner signs off** (see `LABEL_REVIEW.md`).

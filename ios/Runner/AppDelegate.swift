@@ -12,19 +12,25 @@ import UIKit
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
-    registerPathsChannel(engineBridge.pluginRegistry)
+    registerPlatformChannel(engineBridge.pluginRegistry)
   }
 
-  /// Returns the app's Documents directory as iOS reports it. Avoids relying
-  /// on the HOME environment variable and avoids a path_provider dependency.
-  private func registerPathsChannel(_ registry: FlutterPluginRegistry) {
-    guard let registrar = registry.registrar(forPlugin: "VeltrioPaths") else { return }
+  /// Small native helpers without third-party plugins:
+  /// - documentsDirectory: the app's Documents path as iOS reports it (HOME is
+  ///   not reliable when launched via devicectl).
+  /// - setIdleTimerDisabled: keeps the screen on during long spike runs; iOS
+  ///   suspends apps on lock and Metal work is not allowed in the background.
+  private func registerPlatformChannel(_ registry: FlutterPluginRegistry) {
+    guard let registrar = registry.registrar(forPlugin: "VeltrioPlatform") else { return }
     let channel = FlutterMethodChannel(
-      name: "veltrio/paths", binaryMessenger: registrar.messenger())
+      name: "veltrio/platform", binaryMessenger: registrar.messenger())
     channel.setMethodCallHandler { call, result in
       switch call.method {
       case "documentsDirectory":
         result(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.path)
+      case "setIdleTimerDisabled":
+        UIApplication.shared.isIdleTimerDisabled = (call.arguments as? Bool) ?? false
+        result(nil)
       default:
         result(FlutterMethodNotImplemented)
       }

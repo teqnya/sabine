@@ -2,21 +2,32 @@
   {
     "id": "m001",
     "category": "urgent",
-    "expected_dates": ["2026-10-27T10:00"],
-    "expected_tasks": ["Approve hiring external service provider (~4,800 EUR)"],
+    "expected_dates": [
+      "2026-10-27T10:00"
+    ],
+    "expected_tasks": [
+      "Approve hiring external service provider (~4,800 EUR)"
+    ],
     "meeting_request": false
   },
   {
     "id": "m002",
     "category": "needs_decision",
-    "expected_dates": ["2026-11-04T14:00", "2026-11-05T10:00"],
-    "expected_tasks": ["Pick a slot for 45-min Q1 roadmap review"],
+    "expected_dates": [
+      "2026-11-03T14:00",
+      "2026-11-04T10:00"
+    ],
+    "expected_tasks": [
+      "Pick a slot for 45-min Q1 roadmap review"
+    ],
     "meeting_request": true
   },
   {
     "id": "m003",
     "category": "fyi",
-    "expected_dates": ["2026-11-10"],
+    "expected_dates": [
+      "2026-11-10"
+    ],
     "expected_tasks": [],
     "meeting_request": false
   },
@@ -30,8 +41,432 @@
   {
     "id": "m005",
     "category": "needs_decision",
-    "expected_dates": ["2026-11-07"],
-    "expected_tasks": ["Choose trade-fair booth offer A or B"],
+    "expected_dates": [
+      "2026-11-06"
+    ],
+    "expected_tasks": [
+      "Choose trade-fair booth offer A or B"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m006",
+    "category": "urgent",
+    "expected_dates": [
+      "2026-10-28T12:00",
+      "2026-10-28T14:00"
+    ],
+    "expected_tasks": [
+      "Approve password reset for sales team"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m007",
+    "category": "needs_decision",
+    "expected_dates": [
+      "2026-11-02T10:00",
+      "2026-11-05T15:30",
+      "2026-12-01"
+    ],
+    "expected_tasks": [
+      "Choose slot for renewal call"
+    ],
+    "meeting_request": true
+  },
+  {
+    "id": "m008",
+    "category": "noise",
+    "expected_dates": [],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m009",
+    "category": "fyi",
+    "expected_dates": [
+      "2026-10-27"
+    ],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m010",
+    "category": "needs_decision",
+    "expected_dates": [
+      "2026-11-06"
+    ],
+    "expected_tasks": [
+      "Approve invoice Muster Consulting 12,400 EUR"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m011",
+    "category": "urgent",
+    "expected_dates": [
+      "2026-10-28T17:00"
+    ],
+    "expected_tasks": [
+      "Call Mark Turner today before 17:00"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m012",
+    "category": "needs_decision",
+    "expected_dates": [
+      "2026-11-01T11:00",
+      "2026-11-02T13:00"
+    ],
+    "expected_tasks": [
+      "Choose slot for partnership review meeting"
+    ],
+    "meeting_request": true
+  },
+  {
+    "id": "m013",
+    "category": "noise",
+    "expected_dates": [],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m014",
+    "category": "fyi",
+    "expected_dates": [
+      "2026-11-02"
+    ],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m015",
+    "category": "fyi",
+    "expected_dates": [
+      "2026-11-20"
+    ],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m016",
+    "category": "noise",
+    "expected_dates": [],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m017",
+    "category": "urgent",
+    "expected_dates": [
+      "2026-10-28T16:00"
+    ],
+    "expected_tasks": [
+      "Decide on replacement supply from Poland (+18%)"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m018",
+    "category": "needs_decision",
+    "expected_dates": [
+      "2026-10-30"
+    ],
+    "expected_tasks": [
+      "Choose candidate for Senior Controller"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m019",
+    "category": "urgent",
+    "expected_dates": [],
+    "expected_tasks": [
+      "Approve rollback of payment system"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m020",
+    "category": "fyi",
+    "expected_dates": [],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m021",
+    "category": "noise",
+    "expected_dates": [],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m022",
+    "category": "fyi",
+    "expected_dates": [
+      "2026-11-15"
+    ],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m023",
+    "category": "needs_decision",
+    "expected_dates": [
+      "2026-11-05T09:00",
+      "2026-11-06T13:00"
+    ],
+    "expected_tasks": [
+      "Pick slot for annual review with Julia"
+    ],
+    "meeting_request": true
+  },
+  {
+    "id": "m024",
+    "category": "noise",
+    "expected_dates": [],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m025",
+    "category": "urgent",
+    "expected_dates": [
+      "2026-10-30T18:00"
+    ],
+    "expected_tasks": [
+      "Approve data breach notification draft today"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m026",
+    "category": "needs_decision",
+    "expected_dates": [
+      "2026-11-04"
+    ],
+    "expected_tasks": [
+      "Approve budget reallocation 20k travel -> tooling"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m027",
+    "category": "needs_decision",
+    "expected_dates": [
+      "2026-11-05"
+    ],
+    "expected_tasks": [
+      "Approve laptop supply quote (380,000 AED)"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m028",
+    "category": "fyi",
+    "expected_dates": [
+      "2026-10-31T22:00"
+    ],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m029",
+    "category": "urgent",
+    "expected_dates": [
+      "2026-10-28T18:00"
+    ],
+    "expected_tasks": [
+      "Sign share purchase agreement via DocuSign by 18:00"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m030",
+    "category": "noise",
+    "expected_dates": [],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m031",
+    "category": "fyi",
+    "expected_dates": [
+      "2026-11-01"
+    ],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m032",
+    "category": "fyi",
+    "expected_dates": [],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m033",
+    "category": "needs_decision",
+    "expected_dates": [
+      "2026-12-21",
+      "2026-12-31"
+    ],
+    "expected_tasks": [
+      "Approve vacation request Tobias Krüger"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m034",
+    "category": "noise",
+    "expected_dates": [],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m035",
+    "category": "noise",
+    "expected_dates": [],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m036",
+    "category": "needs_decision",
+    "expected_dates": [
+      "2026-11-09"
+    ],
+    "expected_tasks": [
+      "Decide data center option A (Kassel) or B (Frankfurt)"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m037",
+    "category": "urgent",
+    "expected_dates": [],
+    "expected_tasks": [
+      "Approve rollback to release 7.2 now"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m038",
+    "category": "fyi",
+    "expected_dates": [
+      "2026-12-17T20:00"
+    ],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m039",
+    "category": "needs_decision",
+    "expected_dates": [
+      "2026-11-10"
+    ],
+    "expected_tasks": [
+      "Decide ERP shortlist (two vendors) for PoC"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m040",
+    "category": "fyi",
+    "expected_dates": [
+      "2026-11-02"
+    ],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m041",
+    "category": "needs_decision",
+    "expected_dates": [
+      "2026-10-29T16:00"
+    ],
+    "expected_tasks": [
+      "Confirm board prep meeting Thursday 16:00"
+    ],
+    "meeting_request": true
+  },
+  {
+    "id": "m042",
+    "category": "urgent",
+    "expected_dates": [
+      "2026-10-28T16:00"
+    ],
+    "expected_tasks": [
+      "Call key customer's procurement head before 16:00"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m043",
+    "category": "noise",
+    "expected_dates": [],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m044",
+    "category": "fyi",
+    "expected_dates": [],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m045",
+    "category": "urgent",
+    "expected_dates": [],
+    "expected_tasks": [
+      "Call back shift lead immediately"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m046",
+    "category": "needs_decision",
+    "expected_dates": [],
+    "expected_tasks": [
+      "Approve new customer service hire"
+    ],
+    "meeting_request": false
+  },
+  {
+    "id": "m047",
+    "category": "noise",
+    "expected_dates": [],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m048",
+    "category": "fyi",
+    "expected_dates": [],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m049",
+    "category": "fyi",
+    "expected_dates": [
+      "2026-11-12",
+      "2026-11-14"
+    ],
+    "expected_tasks": [],
+    "meeting_request": false
+  },
+  {
+    "id": "m050",
+    "category": "needs_decision",
+    "expected_dates": [
+      "2026-11-13"
+    ],
+    "expected_tasks": [
+      "Choose company car leasing offer"
+    ],
     "meeting_request": false
   }
 ]

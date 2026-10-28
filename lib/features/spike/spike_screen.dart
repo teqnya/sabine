@@ -51,7 +51,7 @@ class _SpikeScreenState extends State<SpikeScreen> {
     super.dispose();
   }
 
-  static const _paths = MethodChannel('veltrio/paths');
+  static const _platform = MethodChannel('veltrio/platform');
 
   /// Set from the native `veltrio/paths` channel in [_init].
   static String _documentsDir = '';
@@ -59,7 +59,7 @@ class _SpikeScreenState extends State<SpikeScreen> {
   Future<void> _init() async {
     try {
       _documentsDir =
-          await _paths.invokeMethod<String>('documentsDirectory') ?? '';
+          await _platform.invokeMethod<String>('documentsDirectory') ?? '';
     } on PlatformException catch (e) {
       setState(() => _error = 'Cannot resolve Documents folder: ${e.message}');
     }
@@ -113,25 +113,13 @@ class _SpikeScreenState extends State<SpikeScreen> {
       'footprint ${_mb(LlamaModel.memoryFootprint())}; '
       'devices ${LlamaModel.backendInfo()}',
     );
-    await _runAll();
+    // Each message is logged as it completes, so an interrupted run
+    // (e.g. app suspended) still leaves partial results.
+    await _runAll(onRun: (r) => _log(_runLine(r)));
     final report = _report;
     if (report == null) {
       _log('ERROR batch failed: $_error');
       return;
-    }
-    for (final r in report.runs) {
-      final s = r.stats;
-      _log(
-        'RUN ${r.message.id} ${r.message.language} '
-        'expected=${r.label.category.wire} got=${r.result?.category.wire ?? 'error'} '
-        '${s == null ? '' : 'prompt=${s.promptTokens}tok(${s.cachedPromptTokens} cached)/${s.promptEvalTime.inMilliseconds}ms '
-                  'gen=${s.generatedTokens}tok/${s.generationTime.inMilliseconds}ms '
-                  '(sampling ${s.samplingTime?.inMilliseconds ?? '?'}ms) '
-                  '${s.generationTokensPerSecond.toStringAsFixed(1)}tok/s '
-                  'peak=${s.peakMemoryBytes == null ? '?' : _mb(s.peakMemoryBytes!)}'}'
-        '${r.truncated ? ' truncated' : ''}'
-        '${r.error == null ? '' : ' error="${r.error}" raw=${r.raw}'}',
-      );
     }
     final score = report.score;
     final remaining = LlamaModel.memoryLimitRemaining();
@@ -144,6 +132,19 @@ class _SpikeScreenState extends State<SpikeScreen> {
       'peak=${report.peakMemoryBytes == null ? '?' : _mb(report.peakMemoryBytes!)} '
       'headroom=${remaining == null ? '?' : _mb(remaining)}',
     );
+  }
+
+  static String _runLine(TriageRun r) {
+    final s = r.stats;
+    return 'RUN ${r.message.id} ${r.message.language} '
+        'expected=${r.label.category.wire} got=${r.result?.category.wire ?? 'error'} '
+        '${s == null ? '' : 'prompt=${s.promptTokens}tok(${s.cachedPromptTokens} cached)/${s.promptEvalTime.inMilliseconds}ms '
+                  'gen=${s.generatedTokens}tok/${s.generationTime.inMilliseconds}ms '
+                  '(sampling ${s.samplingTime?.inMilliseconds ?? '?'}ms) '
+                  '${s.generationTokensPerSecond.toStringAsFixed(1)}tok/s '
+                  'peak=${s.peakMemoryBytes == null ? '?' : _mb(s.peakMemoryBytes!)}'}'
+        '${r.truncated ? ' truncated' : ''}'
+        '${r.error == null ? '' : ' error="${r.error}" raw=${r.raw}'}';
   }
 
   /// Prints and appends to Documents/spike_autorun.log, which the Mac fetches
@@ -215,20 +216,28 @@ class _SpikeScreenState extends State<SpikeScreen> {
     setState(() => _lastRun = run);
   });
 
-  Future<void> _runAll() => _guard('Running batch…', () async {
-    _cancel = false;
-    final report = await runBatch(
-      _llm,
-      _prompt!,
-      _dataset!,
-      onProgress: (done, total) => setState(() => _progress = (done, total)),
-      isCancelled: () => _cancel,
-    );
-    setState(() {
-      _report = report;
-      _progress = null;
-    });
-  });
+  /// Keeps the screen on while the batch runs: iOS suspends the app on lock,
+  /// and GPU work is not allowed in the background.
+  Future<void> _runAll({void Function(TriageRun run)? onRun}) =>
+      _guard('Running batch…', () async {
+        _cancel = false;
+        await _platform.invokeMethod<void>('setIdleTimerDisabled', true);
+        try {
+          final report = await runBatch(
+            _llm,
+            _prompt!,
+            _dataset!,
+            onProgress: (done, total) =>
+                setState(() => _progress = (done, total)),
+            onRun: onRun,
+            isCancelled: () => _cancel,
+          );
+          setState(() => _report = report);
+        } finally {
+          setState(() => _progress = null);
+          await _platform.invokeMethod<void>('setIdleTimerDisabled', false);
+        }
+      });
 
   @override
   Widget build(BuildContext context) {
