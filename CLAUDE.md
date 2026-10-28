@@ -23,10 +23,10 @@ Core promise: "No account. No cloud. No copy of your mail on our side."
 Goal: decide with numbers whether a small on-device model is good enough for a manager's daily mail.
 
 ### Test device (hard constraints)
-- iPhone 13 (A15, 4 GB RAM), **iOS 15.8.1**.
+- **iPhone SE (A15, 4 GB RAM), iOS 27.0.1** (owner decision 2026-10-28; replaces the iPhone 13 on iOS 15.8.1, which is not measured in the spike, so iOS 15 compatibility stays unverified).
 - Apple Foundation Models are NOT available (needs iOS 26 + Apple Intelligence hardware). Do not build on them for the spike.
 - iOS apps are typically killed above roughly 2–2.5 GB memory on this device; keep model + context within that.
-- Treat iPhone 13 as the **minimum bar**, not the target. Real target devices are newer.
+- Treat this A15 / 4 GB device as the **minimum bar**, not the target. Real target devices are newer.
 - Set the iOS deployment target to the lowest value the installed Xcode supports (aim for 15.0). Verify Xcode/Flutter versions before choosing; report if the toolchain cannot target iOS 15.
 
 ### Inference stack
@@ -51,7 +51,7 @@ Goal: decide with numbers whether a small on-device model is good enough for a m
 ### Success criteria
 - Classification agreement with the owner's labels **>= 85%** on 50 messages.
 - Drafts need only minor edits in most cases (owner rates 1–5; target avg >= 3.5 for EN/DE).
-- Full brief for ~50 messages in **< 30 seconds** on target hardware (note iPhone 13 separately).
+- Full brief for ~50 messages in **< 30 seconds** on target hardware (note the A15 test device separately).
 - No crashes from memory pressure; no thermal shutdown in a 50-message run.
 
 ### Spike deliverable

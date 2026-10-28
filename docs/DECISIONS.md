@@ -4,7 +4,15 @@ Newest entries at the top. Each entry: date, decision/finding, rationale.
 
 ---
 
-## 2026-10-28 — llama.cpp binding options (pending owner decision)
+## 2026-10-28 — Owner decisions: binding and test device
+
+- **Binding: own thin FFI wrapper over llama.cpp** (no plugin). llama.cpp is vendored as a git submodule pinned to a release tag, built as an XCFramework, and called from Dart via `dart:ffi` in a separate isolate. Rationale: brief preference, full control, no build-time binary downloads from third parties, and a smaller dependency surface.
+- **llama.cpp pinned to release `b11968`** (shallow submodule at `third_party/llama.cpp`). CMake 4.4.5 is installed as the prebuilt Homebrew cask, because the formula would have compiled from source on this Intel macOS.
+- **Test device: iPhone SE (A15, 4 GB), iOS 27.0.1 only.** The iPhone 13 on iOS 15.8.1 is dropped from the spike. Its chip class and RAM are the same, so the memory bar is the same; iOS 15 runtime compatibility stays **unverified**. CLAUDE.md §3 is updated.
+
+---
+
+## 2026-10-28 — llama.cpp binding options (decided below: own FFI wrapper)
 
 Checked 2026-10-28:
 
