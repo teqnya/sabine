@@ -1,0 +1,5 @@
+# Standalone analysis config (the app root includes flutter_lints, which this
+# pure-Dart package does not depend on).
+analyzer:
+  exclude:
+    - build/**

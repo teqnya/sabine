@@ -7,8 +7,7 @@ abstract interface class LocalLlm {
   /// Loads a model file from local storage. Must be called before [generate].
   Future<ModelInfo> load(LlmLoadConfig config);
 
-  /// Runs one completion. When [request.jsonSchema] is set, decoding must be
-  /// constrained to that schema (e.g. llama.cpp grammar).
+  /// Runs one completion from a clean context. Throws [LlmException].
   Future<LlmResult> generate(LlmRequest request);
 
   /// Frees the model and context memory.
@@ -48,13 +47,19 @@ class ModelInfo {
 class LlmRequest {
   const LlmRequest({
     required this.prompt,
-    this.jsonSchema,
+    this.system,
+    this.grammar,
     this.maxTokens = 256,
     this.temperature = 0.0,
   });
 
+  /// User message; the runtime applies the model's chat template.
   final String prompt;
-  final Map<String, dynamic>? jsonSchema;
+  final String? system;
+
+  /// GBNF grammar constraining the output (llama.cpp). Each JSON schema in
+  /// `schemas/` has a hand-written `.gbnf` twin.
+  final String? grammar;
   final int maxTokens;
   final double temperature;
 }
@@ -66,6 +71,7 @@ class LlmResult {
     required this.generatedTokens,
     required this.promptEvalTime,
     required this.generationTime,
+    this.footprintBytes,
     this.peakMemoryBytes,
   });
 
@@ -75,7 +81,10 @@ class LlmResult {
   final Duration promptEvalTime;
   final Duration generationTime;
 
-  /// Process resident memory high-water mark, if the platform reports it.
+  /// Process memory footprint after generation, if the platform reports it.
+  final int? footprintBytes;
+
+  /// Process memory footprint high-water mark, if the platform reports it.
   final int? peakMemoryBytes;
 
   double get generationTokensPerSecond => generationTime == Duration.zero
@@ -83,4 +92,13 @@ class LlmResult {
       : generatedTokens / (generationTime.inMicroseconds / 1e6);
 
   Duration get totalTime => promptEvalTime + generationTime;
+}
+
+class LlmException implements Exception {
+  LlmException(this.message);
+
+  final String message;
+
+  @override
+  String toString() => 'LlmException: $message';
 }

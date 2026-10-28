@@ -33,6 +33,9 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+  # Local FFI wrapper over llama.cpp (packages/veltrio_llm); no network access.
+  veltrio_llm:
+    path: packages/veltrio_llm
   cupertino_icons: ^1.0.8
 
 dev_dependencies:
@@ -61,6 +64,9 @@ flutter:
   assets:
     - lib/core/ai/prompts/
     - lib/core/ai/schemas/
+    # Synthetic spike test set (CLAUDE.md §3); never real mail.
+    - spike/testdata/messages.json
+    - spike/testdata/labels.json
 
   # To add assets to your application, add an assets section, like this:
   # assets:

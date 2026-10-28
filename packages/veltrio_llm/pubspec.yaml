@@ -1,0 +1,20 @@
+name: veltrio_llm
+description: Thin FFI wrapper over llama.cpp for on-device inference (Veltrio).
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: ^3.10.0
+
+# Official dart-lang packages only (github.com/dart-lang/native); no network or
+# telemetry at runtime.
+#   ffi:          C string/memory helpers for the FFI calls.
+#   hooks, code_assets: native-assets build hook that bundles the prebuilt
+#                 libveltrio_llm.dylib into the app (no build-time downloads).
+dependencies:
+  ffi: ^2.1.0
+  hooks: ^2.0.0
+  code_assets: ^2.0.0
+
+dev_dependencies:
+  test: ^1.25.0

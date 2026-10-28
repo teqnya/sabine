@@ -1,0 +1,7 @@
+# llama.cpp grammar (GBNF) equivalent of triage.v1.json.
+# Forces valid JSON with a known category; keep in sync with the schema.
+root     ::= "{" ws "\"category\"" ws ":" ws category ws "," ws "\"summary\"" ws ":" ws summary ws "}"
+category ::= "\"urgent\"" | "\"needs_decision\"" | "\"fyi\"" | "\"noise\""
+summary  ::= "\"" char{1,160} "\""
+char     ::= [^"\\\x7F\x00-\x1F] | "\\" (["\\/bfnrt] | "u" [0-9a-fA-F]{4})
+ws       ::= [ \t\n]{0,4}

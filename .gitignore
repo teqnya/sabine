@@ -51,3 +51,7 @@ third_party/llama.cpp/build*/
 *.iml
 .vscode/
 .DS_Store
+
+# veltrio_llm native build outputs (rebuild with packages/veltrio_llm/scripts/build_native.sh)
+packages/veltrio_llm/build/
+packages/veltrio_llm/native/
