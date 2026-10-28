@@ -23,7 +23,7 @@ Core promise: "No account. No cloud. No copy of your mail on our side."
 Goal: decide with numbers whether a small on-device model is good enough for a manager's daily mail.
 
 ### Test device (hard constraints)
-- **iPhone SE (A15, 4 GB RAM), iOS 27.0.1** (owner decision 2026-10-28; replaces the iPhone 13 on iOS 15.8.1, which is not measured in the spike, so iOS 15 compatibility stays unverified).
+- **iPhone 13 (iPhone14,5; A15, 4 GB RAM), iOS 27.0.1**, named "iPhone SE" on the network (owner decision 2026-10-28). The iOS 15.8.1 device is not measured in the spike, so iOS 15 compatibility stays unverified.
 - Apple Foundation Models are NOT available (needs iOS 26 + Apple Intelligence hardware). Do not build on them for the spike.
 - iOS apps are typically killed above roughly 2–2.5 GB memory on this device; keep model + context within that.
 - Treat this A15 / 4 GB device as the **minimum bar**, not the target. Real target devices are newer.

@@ -4,6 +4,17 @@ Newest entries at the top. Each entry: date, decision/finding, rationale.
 
 ---
 
+## 2026-10-28 — Signing, Xcode build setup, device identity
+
+- **Signing team:** Teqnya UG (haftungsbeschraenkt), team `3267CMJYRV` (paid), Apple ID teqnya.developer@gmail.com. Bundle ID `com.teqnya.sabine`.
+- **Xcode DerivedData:** the global Xcode setting pointed to a disconnected external drive (`/Volumes/My Passport/.../Bandaroza-Mobile/ios/build`). The owner chose to reset it to the default (`~/Library/Developer/Xcode/DerivedData`). This affects all Xcode projects on this Mac.
+- **Removed the iOS 18.1 Simulator runtime** with `xcrun simctl runtime delete`. It was unused, because Xcode 26.3 needs the 26.2 runtime.
+- **Blocker:** Xcode 26.3 refuses every iOS device destination with *"iOS 26.2 is not installed"*. The iOS 26.2 platform component has to be installed (Xcode → Settings → Components, or `xcodebuild -downloadPlatform iOS`, roughly 8 GB including the simulator).
+- **Device identity:** the test phone is named "iPhone SE", but `devicectl` reports it as an **iPhone 13 (iPhone14,5)**, A15 with 4 GB, running **iOS 27.0.1**. The spike therefore measures on the brief's iPhone 13 hardware, on iOS 27.
+- **Open risk:** Xcode 26.3 is older than iOS 27. Deploying to the device may need newer Xcode device support. We will only know after the platform is installed.
+
+---
+
 ## 2026-10-28 — Owner decisions: binding and test device
 
 - **Binding: own thin FFI wrapper over llama.cpp** (no plugin). llama.cpp is vendored as a git submodule pinned to a release tag, built as an XCFramework, and called from Dart via `dart:ffi` in a separate isolate. Rationale: brief preference, full control, no build-time binary downloads from third parties, and a smaller dependency surface.
